@@ -88,6 +88,9 @@ class Branch extends MX_Controller
 
 	public function create()
 	{
+		$this->viewdata['title'] = 'Create Branches';
+		$this->viewdata['content'] = 'branch/form_add';
+		$this->load->view($this->template, $this->viewdata);
 
 	}
 	public function store()

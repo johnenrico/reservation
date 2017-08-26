@@ -84,7 +84,7 @@ CREATE TABLE `module` (
 
 /*Data for the table `module` */
 
-insert  into `module`(`modid`,`parent_id`,`mod_name`,`mod_alias`,`icon`,`permalink`,`mod_order`,`published`,`created`) values (1,0,'Branches','branch','ion-levels','branch',6,'y',NULL),(2,0,'Users','users','ion-ios7-people','users',5,'y',NULL),(3,0,'User Group','user_group','ion-ios7-locked','usergroup',7,'y',NULL),(4,0,'Time Slots','time_slot','ion-clock','time_slot',3,'y',NULL),(5,0,'Reports','reports','ion-pie-graph','reports',4,'y',NULL),(6,0,'Customers','customers','ion-android-social','customers',2,'y',NULL),(7,0,'Fields','Fields','ion-ios7-football','customers',3,'y',NULL),(8,0,'Reservation','reservation','ion-clipboard','reservation',1,'y',NULL);
+insert  into `module`(`modid`,`parent_id`,`mod_name`,`mod_alias`,`icon`,`permalink`,`mod_order`,`published`,`created`) values (1,0,'Branches','branch','ion-levels','branch',6,'y',NULL),(2,0,'Users','users','ion-ios7-people','users',5,'y',NULL),(3,0,'User Group','user_group','ion-ios7-locked','usergroup',7,'y',NULL),(4,0,'Time Slots','time_slot','ion-clock','time_slot',3,'y',NULL),(5,0,'Reports','reports','ion-pie-graph','reports',4,'y',NULL),(6,0,'Customers','customers','ion-android-social','customers',2,'y',NULL),(7,0,'Fields','fields','ion-ios7-football','fields',3,'y',NULL),(8,0,'Reservation','reservation','ion-clipboard','reservation',1,'y',NULL);
 
 /*Table structure for table `reservation` */
 
@@ -125,7 +125,8 @@ DROP TABLE IF EXISTS `time_slots`;
 
 CREATE TABLE `time_slots` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time_range` varchar(255) NOT NULL,
+  `time_start` int(11) DEFAULT NULL,
+  `time_end` int(11) DEFAULT NULL,
   `amount` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

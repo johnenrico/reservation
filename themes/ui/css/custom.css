@@ -195,3 +195,11 @@ a.float:hover + div.label-container{
 .question_header{
     word-break: break-all;
 }
+
+.hr-line-dashed {
+  border-top: 1px dashed #e7eaec;
+  color: #ffffff;
+  background-color: #ffffff;
+  height: 1px;
+  margin: 5px 0;
+}
