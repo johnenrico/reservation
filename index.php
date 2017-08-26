@@ -1,5 +1,5 @@
 <?php
-
+   
 // The Directory Separator
 define('DS', str_replace('\\', '/', DIRECTORY_SEPARATOR));
 
