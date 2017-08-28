@@ -23,6 +23,30 @@ class Home extends MX_Controller
 		$this->load->view($this->template, $this->viewdata);
 
 	}
+
+	public function dashboard_data()
+	{
+		$all_post = $this->general->all_post();
+
+		// switch ($all_post->type) 
+		// {
+		// 	case 'reservation':
+				
+		// 	break;
+		// 	case 'customers':
+				
+		// 	break;
+		// 	case 'branch':
+				
+		// 	break;
+		// 	case 'fields':
+				
+		// 	break;
+			
+			
+		// }
+
+	}
 	
 
 	

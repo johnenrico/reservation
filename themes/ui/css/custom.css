@@ -203,3 +203,9 @@ a.float:hover + div.label-container{
   height: 1px;
   margin: 5px 0;
 }
+
+.cursor{
+    cursor: pointer;
+}
+
+

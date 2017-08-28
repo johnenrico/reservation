@@ -49,6 +49,8 @@
 
 <link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/select2/select2.min.css">
 
+<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/jquery-timepicker/jquery.timepicker.css">
+
 <link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/ionicon/css/ionicons.min.css">
 
 <link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>css/custom.css" />

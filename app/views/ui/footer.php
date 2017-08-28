@@ -14,11 +14,11 @@
 <script src="<?php echo THEME; ?>assets/jquery-slimscroll/jquery.slimscroll.js"></script>
 <script src="<?php echo THEME; ?>assets/jquery-blockui/jquery.blockUI.js"></script>
 
-<script src="<?php echo THEME; ?>assets/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
+<script src="<?php echo THEME; ?>assets/jQuery-Mask-Plugin/jquery.mask.min.js"></script>
 
 <script src="<?php echo THEME; ?>assets/sweet-alert/sweet-alert.min.js"></script>
 
-<script src="http://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script>
+<!-- <script src="http://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script> -->
 <!-- <script src="http://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script> -->
 <!-- CUSTOM JS -->
 
@@ -36,7 +36,7 @@
 <script src="<?php echo THEME; ?>assets/dropzone/dropzone.min.js"></script>
 
 <!-- CHART JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script> -->
 
 
 <script src="<?php echo THEME; ?>js/jquery.app.js"></script>
@@ -55,9 +55,11 @@
 
 <script src="<?php echo THEME; ?>assets/select2/select2.full.min.js"></script>
 
-
 <script src="<?php echo THEME; ?>assets/toastr/toastr.min.js"></script>
 <script src="<?php echo THEME; ?>assets/overlay_loading/loadingoverlay.min.js"></script>
+
+<script src="<?php echo THEME; ?>assets/jquery-timepicker/jquery.timepicker.min.js"></script>
+
 
 <script src="<?php echo THEME; ?>js/custom.js"></script>
 <script src="<?php echo THEME; ?>js/coms.js"></script>

@@ -6,12 +6,13 @@ class Fields extends MX_Controller
 	{
 		parent::__construct();
 
-		// $this->current = $this->general->check_user();
+		$this->current = $this->general->check_user();
 		$this->template = $this->general->template;
 		$this->template_login = $this->general->template_login;
 		$this->viewdata = $this->general->viewdata();
 		
 		$this->viewdata['controller'] = 'fields';
+		$this->viewdata['mod_alias'] = 'fields';
 		$this->page = 'fields';
 
 	
@@ -23,6 +24,7 @@ class Fields extends MX_Controller
 
 		if($res == 'GET')
 		{
+			$this->viewdata['branches'] = $this->general->get_table('branches','', ['id', 'name']);
 			$this->viewdata['title'] = 'Soccer Fields';
 			$this->viewdata['content'] = 'fields/table';
 			$this->load->view($this->template, $this->viewdata);
@@ -36,42 +38,41 @@ class Fields extends MX_Controller
 
 			$no = $_POST['start'];
 
-			$this->general->column_search = ['g.name', 'g.draw1_start', 'g.draw1_end', 'g.draw2_start', 'g.draw2_end'];
-			$this->general->column_order = ['g.name', 'g.draw1_start', 'g.draw1_end', 'g.draw2_start', 'g.draw2_end'];
+			$this->general->column_search = ['f.name', 'f.branch_id', 'f.status'];
+			$this->general->column_order = ['f.name', 'f.branch_id', 'f.status'];
 
 
-			$this->general->table = 'game as g';
-			$this->db->join('users as s', 's.id = g.uid', 'inner');
-			$this->db->select('g.id, g.name, g.draw1_start, g.draw1_end, g.draw2_start, g.draw2_end, g.created_at');
+			$this->general->table = 'fields as f';
+			$this->db->join('branches as b', 'b.id = f.branch_id', 'inner');
+			$this->db->select(['f.name', 'f.branch_id', 'f.id', 'f.status', 'b.name as branch']);
 			$list = $this->general->get_datatables();
 
 			foreach ($list as $val) {
 				$action = '';
 				$row = array();
 				$row['name'] = $val->name;
-				$row['draw1_start'] = $val->draw1_start;
-				$row['draw1_end'] = $val->draw1_end;
-				$row['draw2_start'] = $val->draw2_start;
-				$row['draw2_end'] = $val->draw2_end;
-				$row['created_at'] = date("F d, Y", strtotime($val->created_at));
+				$row['branch'] = $val->branch_id;
+				$row['branch_name'] = $val->branch;
+				$row['status'] = $val->status  == 1 ? '<label class="label label-info">Active</label>' : '<label class="label label-warning">Inactive</label>';
+				$row['status_val'] = $val->status;
+			
 
-
-				if($this->general->mod_access('game', 'alter')){
-					$action .= ' <a href="'.site_url('game/edit/'.$val->id).'" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i> Edit</a>';
+				if($this->general->mod_access($this->page, 'alter')){
+					$action .= ' <button class="btn btn-default btn-sm modal_action" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_action" data-type="edit" data-header="Edit Branch"><i class="fa fa-pencil"></i> Edit</button>';
 
 				}
-				if($this->general->mod_access('game', 'drop')){
-					$action .= ' <button class="btn btn-default md-trigger   btn-sm waves-effect waves-light game_delete" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_delete"><i class="fa fa-trash"></i> Delete</button>';
+				if($this->general->mod_access($this->page, 'drop')){
+					$action .= ' <button class="btn btn-default md-trigger btn-sm waves-effect waves-light game_delete" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_delete"><i class="fa fa-trash"></i> Delete</button>';
 				}
 				$row['action'] = $action;
 				$data[] = $row;
 			}
 
-			$this->db->join('users as s', 's.id = g.uid', 'inner');
-			$x = $this->db->get('game as g')->num_rows();
+			$this->db->join('branches as b', 'b.id = f.branch_id', 'inner');
+			$x = $this->db->get('fields as f')->num_rows();
 			$total =$x;
 
-			$this->db->join('users as s', 's.id = g.uid', 'inner');
+			$this->db->join('branches as b', 'b.id = f.branch_id', 'inner');
 			$filtered = $this->general->count_filtered();
 
 			$output = [
@@ -86,21 +87,82 @@ class Fields extends MX_Controller
 		}
 	}
 
-	public function create()
+	public function save()
 	{
 
-	}
-	public function store()
-	{
+		$all_post = $this->general->all_post();
+		if($all_post->type == 'create')
+		{
+			$this->general->blocked_page($this->page, 'create');
+			$fv = $this->form_validation;
+			$fv->set_rules('name', 'name', 'required');
+			$fv->set_rules('status', 'status', 'required');
+			$fv->set_rules('branch', 'branch', 'required');
+
+			if($fv->run() == TRUE)
+			{
+				 $this->db->where('branch_id', $all_post->branch);
+				 $branch = $this->general->get_table('fields', ['name' => $all_post->name]);
+
+				 if($branch->num_rows() > 0)
+				 {
+				 	  exit($this->general->json_msg('error', 'Name is Already Taken'));
+				 }
+
+				 $insert_data = [
+			    				'name' => $all_post->name
+			    				,'status' => $all_post->status
+			    				,'branch_id' => $all_post->branch
+			    			   ];
+			    $this->general->insert_table('fields', $insert_data);
+
+			    exit($this->general->json_msg('success', 'Succesfully Save'));	
+				
+			}	
+			else
+			{
+			   exit($this->general->json_msg('error', $this->form_validation->error_array()));		
+			}
+
+
+		}
+		else
+		{
+			$this->general->blocked_page($this->page, 'alter');
+			$fv = $this->form_validation;
+			$fv->set_rules('name', 'name', 'required');
+			$fv->set_rules('status', 'status', 'required');
+			$fv->set_rules('branch', 'branch', 'required');
+		
+
+			if($fv->run() == TRUE)
+			{
+				 $this->db->where('id !=', $all_post->id);
+			 	 $this->db->where('branch_id', $all_post->branch);
+				 $branch = $this->general->get_table('fields', ['name' => $all_post->name]);
+				 if($branch->num_rows() > 0)
+				 {
+				 	  exit($this->general->json_msg('error', 'Name is Already Taken'));
+				 }
+				 $update_data = [
+			    				'name' => $all_post->name
+			    				,'status' => $all_post->status
+			    				,'branch_id' => $all_post->branch
+			    			   ];
+			    $this->general->update_table('fields', ['id' => $all_post->id],$update_data);
+
+			    exit($this->general->json_msg('success', 'Succesfully Updated'));
+			}	
+			else
+			{
+				exit($this->general->json_msg('error', $this->form_validation->error_array()));
+			}
+
+		}
+		
 
 	}
-	public function edit($id)
-	{
+	
 
-	}
-	public function update()
-	{
-
-	}
 	
 }

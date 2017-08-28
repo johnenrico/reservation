@@ -1,8 +1,3 @@
-
-
-
-
-
 Number.prototype.formatMoney = function(c, d, t){
   var n = this, 
   c = isNaN(c = Math.abs(c)) ? 2 : c, 
@@ -14,51 +9,55 @@ Number.prototype.formatMoney = function(c, d, t){
   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 
-
-$(function(){
-
- $(".btn_print").click(function () {
+$(".btn_print").click(function () {
   $("#print_area").printThis({
     debug: true,
     canvas: true   
   });
 });
 
-    $(".selectize").select2();
+$(document).ready(function(){
+$(".selectize").select2();
 
+$('.daterange-btn').daterangepicker(
+{
+ maxDate: moment().format("MM/DD/YYYY"),
+ ranges: {
+  'Today': [moment(), moment()],
+  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+  'This Month': [moment().startOf('month'), moment().endOf('month')],
+  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+},
+startDate: moment(),
+endDate: moment()
+}
+);
+$('.daterange-btn').on('apply.daterangepicker', function(ev, picker){
+  $(this).attr('data-value', picker.startDate.format('YYYY-MM-DD') + '>' + picker.endDate.format('YYYY-MM-DD'));
+  $(this).find('span').html(picker.startDate.format('MMMM D, YYYY') + '-' + picker.endDate.format('MMMM D, YYYY'));
 
-     $('.daterange-btn').daterangepicker(
-     {
-       maxDate: moment().format("MM/DD/YYYY"),
-       ranges: {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-      },
-      startDate: moment(),
-      endDate: moment()
-    }
-    );
-     $('.daterange-btn').on('apply.daterangepicker', function(ev, picker){
-      $(this).attr('data-value', picker.startDate.format('YYYY-MM-DD') + '>' + picker.endDate.format('YYYY-MM-DD'));
-      $(this).find('span').html(picker.startDate.format('MMMM D, YYYY') + '-' + picker.endDate.format('MMMM D, YYYY'));
-
-    })
+})
     //Date picker
-    $('.datepicker').datepicker({
+$('.datepicker').datepicker({
       autoclose: true,
       format: 'MM dd, yyyy' ,
-      endDate: new Date(),
-    });
+      // endDate: new Date(),
+});
+
+$('.timepicker').timepicker({
+    'minTime': '06:00',
+    'maxTime': '24:00',
+    'step' : 60,
+    'timeFormat': 'h:i a'
+});
+
+$('[data-tt="tooltip"]').tooltip(); 
 
 
+})
 
-
-
- $('[data-tt="tooltip"]').tooltip(); 
- base_url = $('body').data('url');
+base_url = $('body').data('url');
 
   // FOR ATTACHMENTS
   Dropzone.autoDiscover = false;
@@ -103,8 +102,8 @@ $(function(){
  }
 });
 
-$(document).on('submit','.flexi_form', function(e)
-{
+ $(document).on('submit','.flexi_form', function(e)
+ {
   $form = $(this);
 
   var target = $(this).data('target');
@@ -114,6 +113,7 @@ $(document).on('submit','.flexi_form', function(e)
   var clear = $(this).data('clear');
   var data = $(this).serialize();
   var callback = $(this).data('callback');
+  var params = $(this).data('params');
 
   if($form.find('.flexi_form').find('.summernote').length > 0)
   {
@@ -122,104 +122,102 @@ $(document).on('submit','.flexi_form', function(e)
 
   e.preventDefault();
   $.ajax({
-     type: 'POST'
-     ,dataType: 'json'
-     ,data: data
-     ,url: $(this).data('url')
-     ,headers: 
-     {
-      'X-CSRF-TOKEN':  $('input[name="csrf"]').val()
+   type: 'POST'
+   ,dataType: 'json'
+   ,data: data
+   ,url: $(this).data('url')
+   ,success : function(r)
+   {
+    if(r.status == 'success')
+    {
+      if(r.redirect != '')
+      {
+       setTimeout(function(){
+        window.location.href = r.redirect;
+      }, 2500);
+
      }
-     ,success : function(r)
+     if(modal != '')
      {
-      if(r.status == 'success')
-      {
-          if(r.redirect != '')
-          {
-               setTimeout(function(){
-                window.location.href = r.redirect;
-               }, 2500);
-          
-          }
-          if(modal != '')
-          {
-            setTimeout(function(){
-            $(modal).modal('hide');
-            }, 1000);
-          }
-          if(datatable != '')
-          {
-            $(datatable).DataTable().draw();
-          }
-          if(clear != 'n' || clear == '')
-          {
-              $form.find('textarea, select, input:not([type="submit"]):not([type="checkbox"]):not([type="hidden"])').val('');
-              if($form.find('.summernote').length > 0)
-              {
-                 $form.find('.summernote').summernote('code', '');
-              }
-  
-          }
-
-          if(typeof callback !== typeof undefined && callback !== false)
-          {
-            window[callback]();
-          }
-          toast_update(r.message, 1500);
-
-
-          if(reload != '' && reload == 'y')
-          {
-             setTimeout(function(){
-                location.reload()
-               }, 2500); 
-          }
-      }
-      else
-      {
-        
-          if(typeof r.message === 'object')
-          {
-            $.each(r.message, function(k, v){
-                 $label = $form.find('[name="'+k+'"]').parent().find('.help-block');
-                  var text = '';
-                  if(v.length > 0)
-                  {
-                      for (var i = 0; i < v.length; i++) 
-                      {
-                       text += v[i] + '<br/>';
-                      };
-                  }
-                
-
-                 if($label.length > 0)
-                 {
-                    $label.html(text).removeClass('ng-hide');
-                 }
-                 else
-                 {
-                    $form.find('[name="'+k+'"]').parent().append('<span class="help-block">'+text+'</span>');
-                 }
-                 $form.find('[name="'+k+'"]').closest('.form-group').addClass('has-error');
-      
-            });
-          }
-          else
-          {
-              toast_update_error(r.message, 1500);  
-          }
-      }
-          preloader(target,'hide');     
+      setTimeout(function(){
+        $(modal).modal('hide');
+      }, 1000);
     }
-     ,beforeSend: function()
-     {
-        preloader(target,'show');
+    if(datatable != '')
+    {
+      $(datatable).DataTable().draw();
+    }
+    if(clear != 'n' || clear == '')
+    {
+      $form.find('textarea, select, input:not([type="submit"]):not([type="checkbox"]):not([type="hidden"])').val('');
+      if($form.find('.summernote').length > 0)
+      {
+       $form.find('.summernote').summernote('code', '');
      }
-  });
+
+   }
+
+   if(typeof callback !== typeof undefined && callback !== false)
+   {  
+
+    if(typeof params !== typeof undefined && params !== false)
+    { 
+     window[callback](params);
+    }
+    else
+    {
+     window[callback]();
+    }
+  }
+  toast_update(r.message, 1500);
+
+
+  if(reload != '' && reload == 'y')
+  {
+   setTimeout(function(){
+    location.reload()
+  }, 2500); 
+ }
+}
+else
+{
+
+  if(typeof r.message === 'object')
+  {
+    $.each(r.message, function(k, v){
+     $label = $form.find('[name="'+k+'"]').parent().find('.help-block');
+     var text = v;
+  
+
+
+   if($label.length > 0)
+   {
+    $label.html(text).removeClass('hide');
+  }
+  else
+  {
+    $form.find('[name="'+k+'"]').parent().append('<span class="help-block">'+text+'</span>');
+  }
+  $form.find('[name="'+k+'"]').closest('.form-group').addClass('has-error');
+
+});
+  }
+  else
+  {
+    toast_update_error(r.message, 1500);  
+  }
+}
+preloader(target,'hide');     
+}
+,beforeSend: function()
+{
+  preloader(target,'show');
+}
+});
 });
 
-function init_datatable(selector = '', url, filters = '', columns, order = '', search = false, form)
-{
+ function init_datatable(selector = '', url, filters = '', columns, order = '', search = false, form)
+ {
 
   $(selector).DataTable({
     processing: true,
@@ -236,53 +234,53 @@ function init_datatable(selector = '', url, filters = '', columns, order = '', s
   });
 
   $(form).on('submit', function(e) {
-     e.preventDefault();
-     $(selector).DataTable().draw();
-   });
+   e.preventDefault();
+   $(selector).DataTable().draw();
+ });
 }
 
 
 
- 
+
 function preloader(target = '', action = 'show')
 {
   if(target != '')
   {
     if(action == 'show')
     {
-       $(target).LoadingOverlay("show", 
-        {
-         image   : base_url+'/assets/overlay_loading/Bars.gif',
-         maxSize  : "70px",
-         minSize   : "70px",
-         zIndex: 999999999,
-        });
-    }
-    else
-    {
-      setTimeout(function(){
-       $(target).LoadingOverlay("hide");
-        }, 1500);
-    }
-   
-  }
-  else
-  {
-   if(action == 'show')
-   {
-      $.LoadingOverlay("show", 
-        {
-          image   : base_url+'/assets/overlay_loading/Bars.gif',
-          maxSize  : "70px",
-          minSize   : "70px",
-          zIndex: 999999999,
-        });  
+     $(target).LoadingOverlay("show", 
+     {
+       image   : base_url+'/assets/overlay_loading/Bars.gif',
+       maxSize  : "70px",
+       minSize   : "70px",
+       zIndex: 999999999,
+     });
    }
    else
    {
-       $.LoadingOverlay("hide");
-   }
- }
+    setTimeout(function(){
+     $(target).LoadingOverlay("hide");
+   }, 1500);
+  }
+
+}
+else
+{
+ if(action == 'show')
+ {
+  $.LoadingOverlay("show", 
+  {
+    image   : base_url+'/assets/overlay_loading/Bars.gif',
+    maxSize  : "70px",
+    minSize   : "70px",
+    zIndex: 999999999,
+  });  
+}
+else
+{
+ $.LoadingOverlay("hide");
+}
+}
 }
 
 function toast_update(msg = '', delay = 0)
@@ -312,35 +310,40 @@ function toast_update_error(msg = '', delay = 0)
 function toast(type = 'success', title = '', message = '')
 {
   toastr.options = {
-     progressBar: true,
-     closeButton: true,
-     preventDuplicates : true,
-  };
+   progressBar: true,
+   closeButton: true,
+   preventDuplicates : true,
+ };
 
-  if(type == 'success')
-  {
-    toastr.success(message, title);
-  }
-  else if(type == 'error')
-  {
-      toastr.error(message, title);
-  }
-  else if(type == 'info')
-  {
-     toastr.info(message, title);  
-  }
-  else if(type == 'warning')
-  {
-     toastr.warning(message, title);  
-  }
-  
+ if(type == 'success')
+ {
+  toastr.success(message, title);
+}
+else if(type == 'error')
+{
+  toastr.error(message, title);
+}
+else if(type == 'info')
+{
+ toastr.info(message, title);  
+}
+else if(type == 'warning')
+{
+ toastr.warning(message, title);  
 }
 
-
+}
 
 $(document).on('change', '.has-error select, .has-error input, .has-error textarea', function(){
   $(this).closest('.form-group').removeClass('has-error');
-  $(this).parent().find('span.help-block').addClass('ng-hide');
+  $(this).parent().find('span.help-block').addClass('hide');
+})
+
+$(document).on('click', '.show_pass', function()
+{
+
+ var val = $(this).find('i').attr('data-value');
+ $(this).find('i').text(val);
 })
 
 
@@ -348,30 +351,30 @@ function ajax_wrap(url = '', data, loader = ''){
 
   var address = $('body').data('url')+'/'+url;
   var jqxhr = 
-   $.ajax({
+  $.ajax({
     type: 'post'
     ,data: data
     ,dataType: 'json'
     ,url: address
     ,async:false
     ,success: function(r){
-    
-        return r;
       if(loader != '')
       {
        preloader(loader,'hide');   
-      }
-    }
-    ,beforeSend:function()
-    {
-      if(loader != '')
-      {
-       preloader(loader,'show');   
-      }
-    }
-    }).responseText
+     }
+      return r;
 
-   return jqxhr;
+   }
+   ,beforeSend:function()
+   {
+    if(loader != '')
+    {
+     preloader(loader,'show');   
+   }
+ }
+}).responseText
+
+  return jqxhr;
 }
 
 
@@ -396,7 +399,7 @@ function general_message(type = '', val =''){
 
 
 $(document).on('click',"[data-href]", function(){
-  window.location = $(this).data('href');
+  window.open($(this).data('href'),'_blank');
 });
 
  // DATA HREF

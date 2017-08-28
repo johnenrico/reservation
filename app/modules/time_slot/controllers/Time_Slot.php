@@ -12,6 +12,7 @@ class Time_Slot extends MX_Controller
 		$this->viewdata = $this->general->viewdata();
 		
 		$this->viewdata['controller'] = 'time_slot';
+		$this->viewdata['mod_alias'] = 'time_slot';
 		$this->page = 'time_slot';
 
 	
@@ -36,42 +37,37 @@ class Time_Slot extends MX_Controller
 
 			$no = $_POST['start'];
 
-			$this->general->column_search = ['g.name', 'g.draw1_start', 'g.draw1_end', 'g.draw2_start', 'g.draw2_end'];
-			$this->general->column_order = ['g.name', 'g.draw1_start', 'g.draw1_end', 'g.draw2_start', 'g.draw2_end'];
+			$this->general->column_search = ['t.start', 't.end', 't.amount'];
+			$this->general->column_order = ['t.start', 't.end', 't.amount'];
 
 
-			$this->general->table = 'game as g';
-			$this->db->join('users as s', 's.id = g.uid', 'inner');
-			$this->db->select('g.id, g.name, g.draw1_start, g.draw1_end, g.draw2_start, g.draw2_end, g.created_at');
+			$this->general->table = 'time_slots as t';
+			$this->db->select(['t.start', 't.end', 't.amount', 't.id']);
 			$list = $this->general->get_datatables();
 
 			foreach ($list as $val) {
 				$action = '';
 				$row = array();
-				$row['name'] = $val->name;
-				$row['draw1_start'] = $val->draw1_start;
-				$row['draw1_end'] = $val->draw1_end;
-				$row['draw2_start'] = $val->draw2_start;
-				$row['draw2_end'] = $val->draw2_end;
-				$row['created_at'] = date("F d, Y", strtotime($val->created_at));
-
-
-				if($this->general->mod_access('game', 'alter')){
-					$action .= ' <a href="'.site_url('game/edit/'.$val->id).'" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i> Edit</a>';
+				$row['start'] = date('H:i a',strtotime($val->start));
+				$row['end'] = date('H:i a',strtotime($val->end));
+				$row['amount'] = number_format($val->amount);
+		
+				if($this->general->mod_access($this->page, 'alter')){
+					$action .= ' <button class="btn btn-default btn-sm modal_action" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_action" data-type="edit" data-header="Edit Time Slot"><i class="fa fa-pencil"></i> Edit</button>';
 
 				}
-				if($this->general->mod_access('game', 'drop')){
-					$action .= ' <button class="btn btn-default md-trigger   btn-sm waves-effect waves-light game_delete" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_delete"><i class="fa fa-trash"></i> Delete</button>';
+				if($this->general->mod_access($this->page, 'drop')){
+					$action .= ' <button class="btn btn-default md-trigger btn-sm waves-effect waves-light game_delete" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_delete"><i class="fa fa-trash"></i> Delete</button>';
 				}
 				$row['action'] = $action;
 				$data[] = $row;
 			}
 
-			$this->db->join('users as s', 's.id = g.uid', 'inner');
-			$x = $this->db->get('game as g')->num_rows();
+	
+			$x = $this->db->get('time_slots as g')->num_rows();
 			$total =$x;
 
-			$this->db->join('users as s', 's.id = g.uid', 'inner');
+	
 			$filtered = $this->general->count_filtered();
 
 			$output = [
@@ -86,20 +82,99 @@ class Time_Slot extends MX_Controller
 		}
 	}
 
-	public function create()
+	public function save()
 	{
 
-	}
-	public function store()
-	{
+		$all_post = $this->general->all_post();
+		if($all_post->type == 'create')
+		{
+			$this->general->blocked_page($this->page, 'create');
+			$fv = $this->form_validation;
+			$fv->set_rules('start', 'start', 'required');
+			$fv->set_rules('end', 'end', 'required');
+			$fv->set_rules('amount', 'amount', 'required');
 
-	}
-	public function edit($id)
-	{
+			$start = date("H:i", strtotime($all_post->start));
 
-	}
-	public function update()
-	{
+			if($fv->run() == TRUE)
+			{	
+				$start = date("H:i", strtotime($all_post->start));
+				$end = date("H:i", strtotime($all_post->end));
+
+				if(strtotime($start) > strtotime($end))
+				{
+					  exit($this->general->json_msg('error', 'Invalid Time Range'));
+				}
+
+				$this->db->where('(start = "'.$start.'" OR end = "'.$end.'")', FALSE, FALSE);
+				$time = $this->general->get_table('time_slots', '', '1');
+
+				if($time->num_rows() > 0)
+				{
+					 exit($this->general->json_msg('error', 'Time is Already Taken'));
+				}
+				 $insert_data = [
+			    				'start' => $start
+			    				,'end' => $end
+			    				,'amount' => str_replace(',', '', $all_post->amount)
+			    			   ];
+			    $this->general->insert_table('time_slots', $insert_data);
+
+			    exit($this->general->json_msg('success', 'Succesfully Save'));	
+				
+			}	
+			else
+			{
+			   exit($this->general->json_msg('error', $this->form_validation->error_array()));		
+			}
+
+
+		}
+		else
+		{
+			$this->general->blocked_page($this->page, 'alter');
+			$fv = $this->form_validation;
+			$fv->set_rules('start', 'start', 'required');
+			$fv->set_rules('end', 'end', 'required');
+			$fv->set_rules('amount', 'amount', 'required');
+
+			if($fv->run() == TRUE)
+			{
+
+				$start = date("H:i", strtotime($all_post->start));
+				$end = date("H:i", strtotime($all_post->end));
+
+				if(strtotime($start) > strtotime($end))
+				{
+					  exit($this->general->json_msg('error', 'Invalid Time Range'));
+
+				}
+			
+				$this->db->where('(start = "'.$start.'" OR end = "'.$end.'")', FALSE, FALSE);
+				$this->db->where('id !=', $all_post->id);
+				$time = $this->general->get_table('time_slots', '', '1');
+
+				if($time->num_rows() > 0)
+				{
+					 exit($this->general->json_msg('error', 'Time is Already Taken'));
+				}
+
+				 $update_data = [
+		    					'start' => $start
+			    				,'end' => $end
+			    				,'amount' => str_replace(',', '', $all_post->amount)
+			    			   ];
+			    $this->general->update_table('time_slots', ['id' => $all_post->id],$update_data);
+
+			    exit($this->general->json_msg('success', 'Succesfully Updated'));
+			}	
+			else
+			{
+				exit($this->general->json_msg('error', $this->form_validation->error_array()));
+			}
+
+		}
+		
 
 	}
 	

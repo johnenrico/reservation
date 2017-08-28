@@ -412,6 +412,24 @@ class General extends CI_Model
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
+    
+	function json_msg($type = 'success', $msg = '', $url = '')
+	{
+
+		$data = json_encode(['status' => $type, 'message' => $msg, 'redirect' => $url]);
+		$offset = 60 * 60;
+		$expire = "expires: " . gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
+		header('HTTP/1.0 200 OK');
+		header('HTTP/1.1 200 OK');
+		header('Server: EUIS GEULIS');
+		header('Content-Encoding: gz');
+		header("Content-Type: application/json; charset=utf-8");
+		header("Cache-Control: private, no-cache, no-store, must-revalidate");
+		header( $expire );
+		header('Vary: Accept-Encoding');
+		header('Pragma: no-cache');
+		return trim($data);
+	}
 
 
     function send_sms($to, $body ) {

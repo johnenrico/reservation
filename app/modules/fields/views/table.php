@@ -16,16 +16,21 @@
                       <h3 class="panel-title">Data</h3>
                     </div>
                     <div class="col-sm-6">
-                      <button class="btn btn-default pull-right modal_actions" data-toggle="modal" data-target="#modal_action" data-type="create" data-header="Create User"><i class="ion-plus-round"></i> Create</button>
+                     <?php if($this->general->mod_access($mod_alias,'create')): ?>
+                      <button class="btn btn-default pull-right modal_action" data-toggle="modal" data-target="#modal_action" data-type="create" data-header="Create Fields"><i class="ion-plus-round"></i> Create</button>
+                    <?php endif ?>
                     </div>
                   </div>
                 </div> 
                 <div class="panel-body"> 
-                  <table class="table table-striped table-bordered">
+                  <table class="table table-striped table-bordered" id="fields_datatable">
                     <thead>
                       <th>Field</th>
                       <th>Branch Name</th>
                       <th>Status</th>
+                      <th>Action</th>
+                      <th></th>
+                      <th></th>
                     </thead>
                   </table>
                 </div> 
@@ -36,6 +41,7 @@
 
         </div> <!-- content -->
 
+      <?php if($this->general->mod_access($mod_alias,'create') || $this->general->mod_access($mod_alias,'alter')): ?>
         <div id="modal_action" class="modal fade" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content p-0 b-0">
@@ -45,7 +51,9 @@
                   <h3 class="panel-title">Test</h3> 
                 </div> 
                 <div class="panel-body"> 
-                  <form role="form">
+                  <form role="form" data-url="<?php echo base_url('').$controller.'/save' ?>" method="POST" class="flexi_form" data-clear="y" data-datatable="#fields_datatable" data-modal="#modal_action" data-target="#modal_action .flexi_form">
+                   <div id="append">
+                   </div>
 
                     <div class="form-group row">
                       <div class="col-sm-11">
@@ -58,10 +66,13 @@
                     </div>
                     <div class="form-group row">
                       <div class="col-sm-8">
-                        <label for="phone">Select Branch</label>
-                        <select class="form-control">
-                          <option value="">Selct Branch</option>
-                        </select>
+                        <label for="branch">Select Branch</label>
+                        <select class="form-control" name="branch" id="branch">
+                          <option value="">Select Branch</option>
+                          <?php foreach ($branches->result() as $vals): ?>
+                           <option value="<?php echo $vals->id; ?>" ><?php echo $vals->name; ?></option>
+                         <?php endforeach ?>
+                       </select>
                       </div>
                     </div>
                     <div class="row">
@@ -69,8 +80,9 @@
                     </div>
                     <div class="form-group row">
                       <div class="col-sm-6">
-                      <label for="status">Status</label>
-                        <select class="form-control">
+                        <label for="status">Status</label>
+                        <select class="form-control" name="status" id="status">
+                          <option value="">Select Status</option>
                           <option value="1">Active</option>
                           <option value="0">Inactive</option>
                         </select>
@@ -90,6 +102,63 @@
 
           </div>
         </div>
+      <?php endif ?>
 
 
         <?php echo $this->load->view('ui/footer.php') ?>
+
+
+        <script type="text/javascript">
+          var oTable = $('#fields_datatable').DataTable({ 
+          "processing": true, //Feature control the processing indicator.
+          "serverSide": true, //Feature control DataTables' server-side processing mode.
+          "order": [[0, 'asc']], //Initial no order.
+          "ajax": {
+            "url": '<?php echo base_url('').$controller.'/index'; ?>',
+            "type": "POST",
+            "data": function (d) {
+             d.date = $('#reportrange>span').text();
+             d.action = $('select[name=category]').val();
+           }
+         },
+         "columns": [
+         { data: 'name', name:  'name' },
+         { data: 'branch_name', name: 'branch_name' },
+         { data: 'status', name: 'status' },
+         { data: 'action', name:'action', orderable: false, sortable: false },
+         { data: 'branch', name:'branch', orderable: false, sortable: false, visible: false },
+         { data: 'status_val', name:'status_val', orderable: false, sortable: false, visible: false },
+         ],
+
+       });
+          $('#fields_datatable').on('submit', function(e) {
+            oTable.draw();
+            e.preventDefault();
+          });
+
+          <?php if($this->general->mod_access($mod_alias,'create') || $this->general->mod_access($mod_alias,'alter')): ?>
+          $(document).on('click','.modal_action', function()
+          {
+            var type = $(this).data('type');
+            var action = '<input type="hidden" value="'+type+'" name="type"/>';
+            var title = $(this).data('header');
+            $('#modal_action .panel-title').text(title);
+
+            if(type =='create')
+            {
+             $('.flexi_form').find('textarea, select, input:not([type="submit"]):not([type="checkbox"]):not([type="hidden"])').val('');
+           }
+           else
+           {
+            action += '<input type="hidden" value="'+$(this).data('id')+'" name="id"/>';
+            var index = $(this).closest("tr").index();
+            var rows = oTable.rows( index ).data();
+            $('input[name="name"]').val(rows[0].name);
+            $('select[name="branch"]').val(rows[0].branch);
+            $('select[name="status"]').val(rows[0].status_val);
+          }
+          $('#modal_action .flexi_form #append').html(action);
+        });
+        <?php endif ?>
+
+      </script>
