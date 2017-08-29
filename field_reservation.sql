@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2017 at 05:44 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.23
+-- Generation Time: Aug 29, 2017 at 03:42 AM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -57,6 +57,7 @@ CREATE TABLE `customers` (
   `passport_id` varchar(50) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `activation` varchar(255) DEFAULT NULL,
   `token` text NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
@@ -66,9 +67,9 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `passport_id`, `username`, `password`, `token`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'johnenricocomia@yahoo.com', '3213123213', '123', '21321312321', 'WVhOa1lYTms=', '', '2017-08-28 17:14:29', '2017-08-28 18:25:23'),
-(2, 'tesadsadsa', 'dsada@yahoo.com', '312321', '12345', 'dsadasadas', 'WVhOa1lYTmtZWE5r', '', '2017-08-28 17:16:52', '0000-00-00 00:00:00');
+INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `passport_id`, `username`, `password`, `activation`, `token`, `created_at`, `updated_at`) VALUES
+(1, 'test', 'johnenricocomia@yahoo.com', '3213123213', '123', '21321312321', 'WVhOa1lYTms=', NULL, '', '2017-08-28 17:14:29', '2017-08-28 18:25:23'),
+(2, 'tesadsadsa', 'dsada@yahoo.com', '312321', '12345', 'dsadasadas', 'WVhOa1lYTmtZWE5r', NULL, '', '2017-08-28 17:16:52', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -257,8 +258,8 @@ CREATE TABLE `user_group` (
 --
 
 INSERT INTO `user_group` (`guid`, `gname`, `role`) VALUES
-(1, 'Super Admin', '{"view":"8,6,4,7,2,1,3","create":"8,6,4,7,2,1,3","alter":"8,6,4,7,2,1,3","drop":"8,6,4,7,2,1,3"}'),
-(2, 'Evaluator', '{"view":"1","create":"","alter":"","drop":""}');
+(1, 'Super Admin', '{\"view\":\"8,6,4,7,2,1,3\",\"create\":\"8,6,4,7,2,1,3\",\"alter\":\"8,6,4,7,2,1,3\",\"drop\":\"8,6,4,7,2,1,3\"}'),
+(2, 'Evaluator', '{\"view\":\"1\",\"create\":\"\",\"alter\":\"\",\"drop\":\"\"}');
 
 --
 -- Indexes for dumped tables
