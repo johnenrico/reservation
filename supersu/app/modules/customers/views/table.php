@@ -23,13 +23,14 @@
                 </div>
               </div> 
               <div class="panel-body"> 
+                <input type="hidden" name="status" value="<?php echo isset($_GET['status']) ? $_GET['status'] : null; ?>" />
                 <table class="table table-striped table-bordered" id="customer_datatable">
                   <thead>
                     <th>Name</th>
                     <th>Username / Passport ID</th>
                     <th>Password</th>
+                    <th>Status</th>
                     <th>Contact</th>
-                    <th>status</th>
                     <th>Join Date</th>
                     <th>Action</th>
                     <th></th>
@@ -138,6 +139,10 @@
       </div>
     <?php endif ?>
 
+    <?php if($this->general->mod_access($mod_alias,'drop')): ?>
+      <?php echo $this->load->view('ui/modal_delete'); ?>
+    <?php endif ?>
+
     <?php echo $this->load->view('ui/footer.php') ?>
 
     <script type="text/javascript">
@@ -149,8 +154,7 @@
             "url": '<?php echo base_url('').$controller.'/index'; ?>',
             "type": "POST",
             "data": function (d) {
-             d.date = $('#reportrange>span').text();
-             d.action = $('select[name=category]').val();
+             d.status = $('input[name="status"]').val();
            }
          },
          "columns": [

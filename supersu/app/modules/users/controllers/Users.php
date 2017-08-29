@@ -70,7 +70,7 @@ class Users extends MX_Controller
 
 				}
 				if($this->general->mod_access($this->page, 'drop')){
-					$action .= ' <button class="btn btn-default md-trigger btn-sm waves-effect waves-light game_delete" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_delete"><i class="fa fa-trash"></i> Delete</button>';
+					$action .= ' <button class="btn btn-default md-trigger btn-sm waves-effect waves-light" data-datatable="#users_datatable" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_delete"><i class="fa fa-trash"></i> Delete</button>';
 				}
 				$row['action'] = $action;
 				$data[] = $row;
@@ -199,5 +199,16 @@ class Users extends MX_Controller
 		}
 
 	}
-	
+	public function delete()
+	{
+		$this->general->blocked_page($this->page, 'drop');
+		$all_post = $this->general->all_post();
+		if($all_post->confirmation != 'CONFIRM')
+		{
+			exit($this->general->json_msg('error', 'Please Enter Confirm to Delete'));
+		}
+		$this->general->delete_table('users', ['id' => $all_post->id]);
+
+		exit($this->general->json_msg('success', 'Successfully Deleted'));
+	}
 }

@@ -24,7 +24,7 @@
                                 <div class="col-sm-6 col-lg-3">
                                     <div class="form-group">
                                       <label for="date">Select Date</label>
-                                      <input class="datepicker form-control" name="date" id="date_filter" />
+                                      <input class="datepicker form-control" name="date" id="date_filter" value="<?php echo isset($_GET['date']) ? date('F d, Y', strtotime($_GET['date'] )) : NULL; ?>" />
                                   </div>
                               </div>  
                               <div class="col-sm-6 col-lg-3">

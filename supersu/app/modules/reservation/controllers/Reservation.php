@@ -35,8 +35,10 @@ class Reservation extends MX_Controller
 
 	public function get_grids()
 	{
+		$this->general->blocked_page($this->page);
 		$all_post = $this->general->all_post();
 
+		$this->db->where('status', 1);
 		$fields = $this->general->get_table('fields', ['branch_id' => $all_post->branch_id]);
 
 		$date = date('Y-m-d', strtotime($all_post->date));
@@ -129,7 +131,7 @@ class Reservation extends MX_Controller
 	public function view($id)
 	{
 
-	
+		$this->general->blocked_page($this->page);
 		$this->db->join('fields as f' ,'f.id = r.field_id', 'inner');
 		$this->db->join('branches as g' ,'g.id = f.branch_id', 'inner');
 		$this->db->join('time_slots as t' ,'t.id = r.time_slot', 'inner');
@@ -140,19 +142,19 @@ class Reservation extends MX_Controller
 
 	
 
-		$this->db->group_by('r.field_id');
-		$this->db->join('fields as f' ,'f.id = r.field_id', 'inner');
-		$field = $this->general->get_table('reservation as r', ['r.date_reserved' => $this->viewdata['data']->date_reserved,'f.branch_id' => $this->viewdata['data']->branch], 'r.field_id');
+		
+		
+		$field = $this->general->get_table('reservation as r', ['r.date_reserved' => $this->viewdata['data']->date_reserved,'r.field_id' => $this->viewdata['data']->field_id], 'r.time_slot');
 		$field_val = [];
+		
 		foreach ($field->result() as $vals) 
 		{
-			if($this->viewdata['data']->field_id != $vals->field_id)
-			{
-				array_push($field_val, $vals->field_id);	
-			}
+			
+				array_push($field_val, $vals->time_slot);	
+			
 			
 		}
-	
+			
 		$this->db->where_not_in('id', $field_val);
 		$this->db->order_by('start', 'asc');
 		$this->viewdata['time'] = $this->general->get_table('time_slots', '',['id','start','end']);
@@ -166,6 +168,7 @@ class Reservation extends MX_Controller
 	}
 	public function get_time_available()
 	{
+		$this->general->blocked_page($this->page);
 		$all_post = $this->general->all_post();
 
 		$this->db->where('id !=', $all_post->id);
@@ -184,13 +187,26 @@ class Reservation extends MX_Controller
 	}
 	public function update()
 	{
+		$this->general->blocked_page($this->page, 'alter');
 		$all_post = $this->general->all_post();
-
-		
+		$this->db->where('id !=',$all_post->id);
+		$is_avail = $this->general->get_table('reservation', ['time_slot' => $all_post->time_slot, 'field_id' => $all_post->field_id, 'date_reserved' => $all_post->date_reserved]);
+		if($is_avail->num_rows() > 0)
+		{
+			exit($this->general->json_msg('error', 'Slots is Already Taken'));
+		}
+		$update_data = [
+		'time_slot' => $all_post->time_slot
+		,'field_id' => $all_post->field_id
+		,'date_reserved' => $all_post->date_reserved
+		];
+		$this->general->update_table('reservation', ['id' => $all_post->id], $update_data);
+		exit($this->general->json_msg('success', 'Successfully Updated'));	
 
 	}
 	public function cancel()
 	{
+		$this->general->blocked_page($this->page, 'drop');
 		$all_post = $this->general->all_post();
 		$this->general->delete_table('reservation', ['id' => $all_post->id]);
 

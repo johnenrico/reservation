@@ -216,6 +216,17 @@ preloader(target,'hide');
 });
 });
 
+$(document).on('click', '*[data-target="#modal_delete"]', function()
+{
+  var target = $(this).data('target');
+  var modal = $(this).data('modal');
+  var datatable = $(this).data('datatable');
+  var id = $(this).data('id');
+  $('#modal_delete').find('.flexi_form').attr('data-datatable', datatable);
+  $('#modal_delete .flexi_form').find('input[name="id"]').val(id);
+
+});
+
  function init_datatable(selector = '', url, filters = '', columns, order = '', search = false, form)
  {
 

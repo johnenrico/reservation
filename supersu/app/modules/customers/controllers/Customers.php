@@ -43,6 +43,18 @@ class Customers extends MX_Controller
 
 			$this->general->table = 'customers as c';
 			$this->db->select(['c.id','c.name','c.username','c.password','c.name', 'c.email', 'c.phone',  'c.activation','c.passport_id', 'c.created_at']);
+			if(isset($all_post->status) && $all_post->status !='')
+			{
+				if($all_post->status =='1')
+				{
+					$this->db->where('activation IS NULL', null, false);
+				}
+				else
+				{
+					$this->db->where('activation IS NOT NULL', null, false);
+				}
+				
+			}
 			$list = $this->general->get_datatables();
 
 			foreach ($list as $val) {
@@ -75,16 +87,40 @@ class Customers extends MX_Controller
 
 				}
 				if($this->general->mod_access($this->page, 'drop')){
-					$action .= ' <button class="btn btn-default md-trigger btn-sm waves-effect waves-light game_delete" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_delete"><i class="fa fa-trash"></i> Delete</button>';
+					$action .= ' <button class="btn btn-default md-trigger btn-sm waves-effect waves-light" data-datatable="#customer_datatable" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_delete"><i class="fa fa-trash"></i> Delete</button>';
 				}
 				$row['action'] = $action;
 				$row['action'] = $action;
 				$data[] = $row;
 			}
 
+			if(isset($all_post->status) && $all_post->status !='')
+			{
+				if($all_post->status =='1')
+				{
+					$this->db->where('activation IS NULL', null, false);
+				}
+				else
+				{
+					$this->db->where('activation IS NOT NULL', null, false);
+				}
+				
+			}
 			$x = $this->db->get('customers as c')->num_rows();
 			$total =$x;
 
+			if(isset($all_post->status) && $all_post->status !='')
+			{
+				if($all_post->status =='1')
+				{
+					$this->db->where('activation IS NULL', null, false);
+				}
+				else
+				{
+					$this->db->where('activation IS NOT NULL', null, false);
+				}
+				
+			}
 			$filtered = $this->general->count_filtered();
 
 			$output = [
@@ -198,6 +234,19 @@ class Customers extends MX_Controller
 
 		}
 
+	}
+	public function delete()
+	{
+		$this->general->blocked_page($this->page, 'drop');
+		$all_post = $this->general->all_post();
+		if($all_post->confirmation != 'CONFIRM')
+		{
+			exit($this->general->json_msg('error', 'Please Enter Confirm to Delete'));
+		}
+		$this->general->delete_table('customers', ['id' => $all_post->id]);
+		$this->general->delete_table('reservation', ['customer_id' => $all_post->id]);
+
+		exit($this->general->json_msg('success', 'Successfully Deleted'));
 	}
 	
 }

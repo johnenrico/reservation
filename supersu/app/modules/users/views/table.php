@@ -156,6 +156,10 @@
 
 <?php endif ?>
 
+<?php if($this->general->mod_access($mod_alias,'drop')): ?>
+  <?php echo $this->load->view('ui/modal_delete'); ?>
+<?php endif ?>
+
 <?php echo $this->load->view('ui/footer.php') ?>
 
 <script type="text/javascript">

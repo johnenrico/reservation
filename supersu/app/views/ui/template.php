@@ -116,7 +116,7 @@
 
                 <!-- Pls Remove -->
                 <?php ($content) ? $this->load->view($content) : NULL; ?>   
-
+                
                 <footer class="footer text-right">
                     2017 © Evaluation.
                 </footer>
