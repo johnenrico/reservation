@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Time_Slot extends MX_Controller
+class time_slot extends MX_Controller
 {
 	function __construct()
 	{

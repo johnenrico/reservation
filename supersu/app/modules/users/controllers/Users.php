@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Users extends MX_Controller
+class users extends MX_Controller
 {
 	function __construct()
 	{

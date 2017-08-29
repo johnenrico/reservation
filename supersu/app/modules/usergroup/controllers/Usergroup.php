@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Usergroup extends MX_Controller
+class usergroup extends MX_Controller
 {
 	function __construct()
 	{

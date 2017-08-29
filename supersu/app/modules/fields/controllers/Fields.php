@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Fields extends MX_Controller
+class fields extends MX_Controller
 {
 	function __construct()
 	{

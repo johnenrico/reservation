@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Branch extends MX_Controller
+class branch extends MX_Controller
 {
 	function __construct()
 	{
