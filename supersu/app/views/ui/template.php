@@ -48,7 +48,7 @@
                                 <li class="dropdown">
                                     <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="<?php echo THEME; ?>images/users/avatar-1.png" alt="user-img" class="img-circle"> </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="<?php echo site_url('users/profile/'.$this->general->check_user()->username); ?>"><i class="md md-face-unlock"></i> Profile</a></li>
+                                        <!-- <li><a href="<?php echo site_url('users/profile/'.$this->general->check_user()->username); ?>"><i class="md md-face-unlock"></i> Profile</a></li> -->
                                         <li><a href="<?php echo site_url('login/do_logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                     </ul>
                                 </li>
@@ -74,7 +74,7 @@
                             <div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><?php $name = explode(' ', $this->general->check_user()->name);echo ucfirst($name[0]);  ?> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="<?php echo site_url('users/profile/'.$this->general->check_user()->username); ?>"><i class="md md-face-unlock"></i> Profile</a></li>
+                                    <!-- <li><a href="<?php echo site_url('users/profile/'.$this->general->check_user()->username); ?>"><i class="md md-face-unlock"></i> Profile</a></li> -->
                                     <li><a href="<?php echo site_url('login/do_logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                 </ul>
                             </div>
