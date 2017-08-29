@@ -43,7 +43,7 @@
                                 <span class="mini-stat-icon bg-purple"><i class="fa fa-question"></i></span>
                                 <div class="mini-stat-info text-right text-muted">
                                    <span class="counter"><?php echo number_format($inactive); ?></span>
-                                   Pending Customers
+                                   Unverified Customers
                                </div> 
 
                            </div>
@@ -87,7 +87,9 @@
                                 <th>Trans ID</th>
                                 <th>Name</th>
                                 <th>Time</th>
-                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Date Reserved</th>
+                                <th>Date File</th>
                             </thead>
                         </table>
                     </div>
@@ -117,7 +119,9 @@
         { data: 'id', name:  'id', searchable: false, orderable: false, sortable: false },
         { data: 'users', name:  'users', searchable: false, orderable: false, sortable: false },
         { data: 'time', name:  'time',searchable: false, orderable: false, sortable: false },
+        { data: 'status', name:  'status',searchable: false, orderable: false, sortable: false},
         { data: 'date_reserved', name:  'date_reserved',searchable: false, orderable: false, sortable: false},
+        { data: 'date_file', name:  'date_file',searchable: false, orderable: false, sortable: false},
         ],
 
     });

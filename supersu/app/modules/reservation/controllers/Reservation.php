@@ -58,7 +58,7 @@ class reservation extends MX_Controller
 				$sub[$j]['time'] = date('H:i a', strtotime($t->start)).' to '.date('H:i a', strtotime($t->end));
 				$sub[$j]['amount'] = $t->amount;
 
-				$status = $this->general->get_table('reservation', ['date_reserved' => $date, 'field_id' => $vals->id,'time_slot' => $t->id, '']);
+				$status = $this->general->get_table('reservation', ['date_reserved' => $date, 'field_id' => $vals->id,'time_slot' => $t->id, 'status' => 1]);
 
 				$sub[$j]['status'] = $status->num_rows() > 0 ? 'reserved' : 0;
 				$sub[$j]['reservation_id'] = $status->num_rows() > 0 ? $status->row()->id : null;
@@ -114,6 +114,7 @@ class reservation extends MX_Controller
 							,'time_slot' => $all_post->timeslot
 							,'customer_id' => $user->row()->id
 							,'date_reserved' => date('Y-m-d',strtotime($all_post->date))
+							,'status' => 1
 							,'updated_at' => $this->general->datetime
 							];
 
@@ -208,7 +209,7 @@ class reservation extends MX_Controller
 	{
 		$this->general->blocked_page($this->page, 'drop');
 		$all_post = $this->general->all_post();
-		$this->general->delete_table('reservation', ['id' => $all_post->id]);
+		$this->general->update_table('reservation', ['id' => $all_post->id], ['status' => 0]);
 
 		exit($this->general->json_msg('success', 'Successfully Canceled', site_url('').'/'.$this->page));
 	}

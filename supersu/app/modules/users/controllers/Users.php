@@ -109,8 +109,8 @@ class users extends MX_Controller
 			$fv->set_rules('email', 'email', 'required|is_unique[users.email]|valid_email');
 			$fv->set_rules('role', 'role', 'required');
 			$fv->set_rules('username', 'username', 'required|min_length[6]|is_unique[users.username]');
-			$fv->set_rules('password', 'password', 'required|min_length[6]|max_length[12]');
-			$fv->set_rules('rpassword', 'rpassword', 'required|min_length[6]|max_length[12]');
+			$fv->set_rules('password', 'password', 'required|min_length[6]');
+			$fv->set_rules('rpassword', 'rpassword', 'required|min_length[6]');
 
 			if($fv->run() == TRUE)
 			{
@@ -144,8 +144,8 @@ class users extends MX_Controller
 			$fv->set_rules('email', 'email', 'required|valid_email');
 			$fv->set_rules('role', 'role', 'required');
 			$fv->set_rules('username', 'username', 'required|min_length[6]');
-			$fv->set_rules('password', 'password', 'required|min_length[6]|max_length[12]');
-			$fv->set_rules('rpassword', 'rpassword', 'required|min_length[6]|max_length[12]');
+			$fv->set_rules('password', 'password', 'required|min_length[6]');
+			$fv->set_rules('rpassword', 'rpassword', 'required|min_length[6]');
 
 			if($fv->run() == TRUE)
 			{

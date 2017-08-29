@@ -27,7 +27,9 @@
  
 
                 <div class="panel-body">
+             
                 <?php echo $this->general->flash_message(); ?>
+          
                 <form class="form-horizontal m-t-20" action="<?php echo site_url('/login'); ?>" method="POST">
                     
                     <div class="form-group ">

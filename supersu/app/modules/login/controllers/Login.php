@@ -80,7 +80,9 @@ class login extends MX_Controller
 	function do_logout(){
 		setcookie("user_token", '');
 		$this->session->unset_userdata('session_uid');
-		redirect('login');
+		$this->session->sess_destroy();
+
+		redirect('/');
 	}
 
 	

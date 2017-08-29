@@ -65,18 +65,17 @@ class General extends CI_Model
 	function flash_message()
 	{
 		$msg = NULL;
-		if($this->session->flashdata('msg_error')){
-			$msg = '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'.$this->session->flashdata('msg_error').'</div>';
+		// <div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		if($this->session->flashdata('msg_error') != null){
+			$msg = '<div class="alert alert-danger">'.$this->session->flashdata('msg_error').'</div>';
 		}
-		if($this->session->flashdata('msg_success')){
-			$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'.$this->session->flashdata('msg_success').'</div>';
+		if($this->session->flashdata('msg_success') != null){
+			$msg = '<div class="alert alert-success">'.$this->session->flashdata('msg_success').'</div>';
 		}
-		if($this->session->flashdata('msg_info')){
-			$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'.$this->session->flashdata('msg_info').'</div>';
+		if($this->session->flashdata('msg_info') != null){
+			$msg = '<div class="alert alert-info">'.$this->session->flashdata('msg_info').'</div>';
 		}
-		$this->session->unset_userdata('msg_info');
-					$this->session->unset_userdata('msg_success');
-							$this->session->unset_userdata('msg_error');
+		
 		
 		return $msg;
 

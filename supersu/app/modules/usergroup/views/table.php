@@ -30,7 +30,7 @@
 
 				<div class="clearfix">
 					<?php if($get_table && $get_table->num_rows() > 0): ?>
-						<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>Deleting User Group can cause serious problem to other table!</div>
+						<div class="alert alert-warning">Deleting User Group can cause serious problem to other table!</div>
 							<table class="table table-bordered table-responsive">
 								<thead>
 									<tr>

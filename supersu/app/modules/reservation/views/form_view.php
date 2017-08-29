@@ -13,6 +13,7 @@
      <div class="panel panel-default">
 
       <div class="panel-body">
+      <div class="myDivToPrint">
         <div class="clearfix">
 
           <div class="pull-left">
@@ -23,7 +24,7 @@
         </div>
         <hr>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 col-lg-12">
 
             <div class="pull-left m-t-30">
               <address>
@@ -31,7 +32,7 @@
                 <strong><?php echo $data->name; ?> | <small><?php echo $data->username; ?></small></strong><br>
                 <?php echo $data->phone; ?><br>
                 <?php echo $data->email; ?><br>
-                <b>PID</b>: <?php echo $data->passport_id; ?>
+                <b>Passport ID</b>: <?php echo $data->passport_id; ?>
               </address>
             </div>
             <div class="pull-right m-t-30">
@@ -44,6 +45,7 @@
         </div>
         <div class="m-h-50"></div>
         <div class="row">
+        <div class="col-lg-12">
           <table class="table table-bordered">
             <thead>
               <tr>
@@ -81,22 +83,26 @@
              </tr>
            </tbody>
          </table>
+         </div>
        </div>
        <div class="row" style="border-radius: 0px">
         <div class="col-md-3 col-md-offset-9">
 
           <hr>
-          <h3 class="text-right"><?php echo number_format($data->amount); ?></h3>
+          <h3 class="text-right">Total: <?php echo number_format($data->amount); ?></h3>
         </div>
+      </div>
       </div>
       <hr>
       <div class="hidden-print">
         <div class="pull-right">
-            <form class="flexi_form" data-url="<?php echo base_url('').$controller.'/cancel' ?>" method="POST" class="flexi_form" data-target=".panel-default">
+            <button type="submit" Onclick="window.print()" class="btn btn-default btn-lg pull-left waves-effect waves-light" style="margin-right:.5em"><i class="md-print" ></i></button>
+
+            <form class="flexi_form pull-left" style="margin-right:.5em" data-url="<?php echo base_url('').$controller.'/cancel' ?>" method="POST" class="flexi_form" data-target=".panel-default">
               <input type="hidden" name="id" value="<?php echo $id; ?>">
             <button type="submit" class="btn btn-danger waves-effect waves-light">Cancel Reservation</button>
             </form>
-          <form class="flexi_form" data-url="<?php echo base_url('').$controller.'/update' ?>" method="POST" class="flexi_form" data-reload="y" data-target=".panel-default">
+          <form class="flexi_form pull-left" data-url="<?php echo base_url('').$controller.'/update' ?>" method="POST" class="flexi_form" data-reload="y" data-target=".panel-default">
               <input type="hidden" name="id" value="<?php echo $id; ?>">
               <input type="hidden" name="field_id" class="field_id" value="<?php echo $data->field_id; ?>">
               <input type="hidden" name="time_slot" class="time_slot" value="<?php echo $data->time_slot; ?>">
@@ -115,6 +121,25 @@
 
 
 <?php echo $this->load->view('ui/footer.php') ?>
+
+<style type="text/css">
+  @media print {
+    .myDivToPrint {
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 0;
+       
+    }
+    .side-menu, .topbar, .page-title, .breadcrumb, hr
+    {
+      visibility: hidden;
+    }
+}
+</style>
 
 <script type="text/javascript">
 $(document).on('change', 'select[name="fields"]', function(){
