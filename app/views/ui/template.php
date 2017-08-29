@@ -118,7 +118,7 @@
                 <?php ($content) ? $this->load->view($content) : NULL; ?>   
 
                 <footer class="footer text-right">
-                    2017 © Evaluation.
+                    2017 © .
                 </footer>
 
             </div>
