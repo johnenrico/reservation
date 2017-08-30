@@ -1,67 +1,253 @@
+        <!-- Footer
+        ============================================= -->
+        <footer id="footer" class="dark">
 
-<!-- jQuery  -->
-<script src="<?php echo THEME; ?>js/jquery.min.js"></script>
+            <div class="container">
 
-<script src="<?php echo THEME; ?>assets/daterangepicker/moment.min.js"></script>
+                <!-- Footer Widgets
+                ============================================= -->
+                <div class="footer-widgets-wrap clearfix">
 
-<script src="<?php echo THEME; ?>js/bootstrap.min.js"></script>
-<script src="<?php echo THEME; ?>js/waves.js"></script>
-<script src="<?php echo THEME; ?>js/wow.min.js"></script>
-<script src="<?php echo THEME; ?>js/jquery.nicescroll.js" type="text/javascript"></script>
-<script src="<?php echo THEME; ?>js/jquery.scrollTo.min.js"></script>
-<script src="<?php echo THEME; ?>assets/jquery-detectmobile/detect.js"></script>
-<script src="<?php echo THEME; ?>assets/fastclick/fastclick.js"></script>
-<script src="<?php echo THEME; ?>assets/jquery-slimscroll/jquery.slimscroll.js"></script>
-<script src="<?php echo THEME; ?>assets/jquery-blockui/jquery.blockUI.js"></script>
+                    <div class="col_two_third">
 
-<script src="<?php echo THEME; ?>assets/jQuery-Mask-Plugin/jquery.mask.min.js"></script>
+                        <div class="col_one_third">
 
-<script src="<?php echo THEME; ?>assets/sweet-alert/sweet-alert.min.js"></script>
+                            <div class="widget clearfix">
 
-<!-- <script src="http://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script> -->
-<!-- <script src="http://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script> -->
-<!-- CUSTOM JS -->
+                                <img src="<?php echo THEME; ?>images/footer-widget-logo.png" alt="" class="footer-logo">
 
+                                <p>We believe in <strong>Simple</strong>, <strong>Creative</strong> &amp; <strong>Flexible</strong> Design Standards.</p>
 
-<!-- DATE PICKER -->
-<script src="<?php echo THEME; ?>assets/timepicker/bootstrap-timepicker.min.js"></script>
-<script src="<?php echo THEME; ?>assets/timepicker/bootstrap-datepicker.js"></script>
+                                <div style="background: url('themes/ui/images/world-map.png') no-repeat center center; background-size: 100%;">
+                                    <address>
+                                        <strong>Headquarters:</strong><br>
+                                        795 Folsom Ave, Suite 600<br>
+                                        San Francisco, CA 94107<br>
+                                    </address>
+                                    <abbr title="Phone Number"><strong>Phone:</strong></abbr> (91) 8547 632521<br>
+                                    <abbr title="Fax"><strong>Fax:</strong></abbr> (91) 11 4752 1433<br>
+                                    <abbr title="Email Address"><strong>Email:</strong></abbr> info@canvas.com
+                                </div>
 
-<!-- Modal-Effect -->
-<script src="<?php echo THEME; ?>assets/modal-effect/js/classie.js"></script>
-<script src="<?php echo THEME; ?>assets/modal-effect/js/modalEffects.js"></script>
+                            </div>
 
+                        </div>
 
-<!-- Page Specific JS Libraries -->
-<script src="<?php echo THEME; ?>assets/dropzone/dropzone.min.js"></script>
+                        <div class="col_one_third">
 
-<!-- CHART JS -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script> -->
+                            <div class="widget widget_links clearfix">
 
+                                <h4>Blogroll</h4>
 
-<script src="<?php echo THEME; ?>js/jquery.app.js"></script>
-<!-- CUSTOM JS -->
+                                <ul>
+                                    <li><a href="http://codex.wordpress.org/">Documentation</a></li>
+                                    <li><a href="http://wordpress.org/support/forum/requests-and-feedback">Feedback</a></li>
+                                    <li><a href="http://wordpress.org/extend/plugins/">Plugins</a></li>
+                                    <li><a href="http://wordpress.org/support/">Support Forums</a></li>
+                                    <li><a href="http://wordpress.org/extend/themes/">Themes</a></li>
+                                    <li><a href="http://wordpress.org/news/">WordPress Blog</a></li>
+                                    <li><a href="http://planet.wordpress.org/">WordPress Planet</a></li>
+                                </ul>
 
+                            </div>
 
-<script src="<?php echo THEME; ?>assets/datatables/jquery.dataTables.min.js"></script>
-<script src="<?php echo THEME; ?>assets/datatables/dataTables.bootstrap.js"></script>
+                        </div>
 
-<script src="<?php echo THEME; ?>assets/print.js"></script>
+                        <div class="col_one_third col_last">
 
-<script src="<?php echo THEME; ?>assets/summernote/summernote.min.js"></script>
-<script src="<?php echo THEME; ?>assets/datepicker/bootstrap-datepicker.js"></script>
+                            <div class="widget clearfix">
+                                <h4>Recent Posts</h4>
 
-<script src="<?php echo THEME; ?>assets/daterangepicker/daterangepicker.js"></script>
+                                <div id="post-list-footer">
+                                    <div class="spost clearfix">
+                                        <div class="entry-c">
+                                            <div class="entry-title">
+                                                <h4><a href="#">Lorem ipsum dolor sit amet, consectetur</a></h4>
+                                            </div>
+                                            <ul class="entry-meta">
+                                                <li>10th July 2014</li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-<script src="<?php echo THEME; ?>assets/select2/select2.full.min.js"></script>
+                                    <div class="spost clearfix">
+                                        <div class="entry-c">
+                                            <div class="entry-title">
+                                                <h4><a href="#">Elit Assumenda vel amet dolorum quasi</a></h4>
+                                            </div>
+                                            <ul class="entry-meta">
+                                                <li>10th July 2014</li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-<script src="<?php echo THEME; ?>assets/toastr/toastr.min.js"></script>
-<script src="<?php echo THEME; ?>assets/overlay_loading/loadingoverlay.min.js"></script>
+                                    <div class="spost clearfix">
+                                        <div class="entry-c">
+                                            <div class="entry-title">
+                                                <h4><a href="#">Debitis nihil placeat, illum est nisi</a></h4>
+                                            </div>
+                                            <ul class="entry-meta">
+                                                <li>10th July 2014</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-<script src="<?php echo THEME; ?>assets/jquery-timepicker/jquery.timepicker.min.js"></script>
+                        </div>
 
+                    </div>
 
+                    <div class="col_one_third col_last">
 
-<script src="<?php echo THEME; ?>js/custom.js"></script>
-<script src="<?php echo THEME; ?>js/coms.js"></script>
+                        <div class="widget clearfix" style="margin-bottom: -20px;">
 
+                            <div class="row">
+
+                                <div class="col-md-6 bottommargin-sm">
+                                    <div class="counter counter-small"><span data-from="50" data-to="15065421" data-refresh-interval="80" data-speed="3000" data-comma="true"></span></div>
+                                    <h5 class="nobottommargin">Total Downloads</h5>
+                                </div>
+
+                                <div class="col-md-6 bottommargin-sm">
+                                    <div class="counter counter-small"><span data-from="100" data-to="18465" data-refresh-interval="50" data-speed="2000" data-comma="true"></span></div>
+                                    <h5 class="nobottommargin">Clients</h5>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="widget subscribe-widget clearfix">
+                            <h5><strong>Subscribe</strong> to Our Newsletter to get Important News, Amazing Offers &amp; Inside Scoops:</h5>
+                            <div class="widget-subscribe-form-result"></div>
+                            <form id="widget-subscribe-form" action="include/subscribe.php" role="form" method="post" class="nobottommargin">
+                                <div class="input-group divcenter">
+                                    <span class="input-group-addon"><i class="icon-email2"></i></span>
+                                    <input type="email" id="widget-subscribe-form-email" name="widget-subscribe-form-email" class="form-control required email" placeholder="Enter your Email">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="submit">Subscribe</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="widget clearfix" style="margin-bottom: -20px;">
+
+                            <div class="row">
+
+                                <div class="col-md-6 clearfix bottommargin-sm">
+                                    <a href="#" class="social-icon si-dark si-colored si-facebook nobottommargin" style="margin-right: 10px;">
+                                        <i class="icon-facebook"></i>
+                                        <i class="icon-facebook"></i>
+                                    </a>
+                                    <a href="#"><small style="display: block; margin-top: 3px;"><strong>Like us</strong><br>on Facebook</small></a>
+                                </div>
+                                <div class="col-md-6 clearfix">
+                                    <a href="#" class="social-icon si-dark si-colored si-rss nobottommargin" style="margin-right: 10px;">
+                                        <i class="icon-rss"></i>
+                                        <i class="icon-rss"></i>
+                                    </a>
+                                    <a href="#"><small style="display: block; margin-top: 3px;"><strong>Subscribe</strong><br>to RSS Feeds</small></a>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div><!-- .footer-widgets-wrap end -->
+
+            </div>
+
+            <!-- Copyrights
+            ============================================= -->
+            <div id="copyrights">
+
+                <div class="container clearfix">
+
+                    <div class="col_half">
+                        Copyrights &copy; 2014 All Rights Reserved by Canvas Inc.<br>
+                        <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>
+                    </div>
+
+                    <div class="col_half col_last tright">
+                        <div class="fright clearfix">
+                            <a href="#" class="social-icon si-small si-borderless si-facebook">
+                                <i class="icon-facebook"></i>
+                                <i class="icon-facebook"></i>
+                            </a>
+
+                            <a href="#" class="social-icon si-small si-borderless si-twitter">
+                                <i class="icon-twitter"></i>
+                                <i class="icon-twitter"></i>
+                            </a>
+
+                            <a href="#" class="social-icon si-small si-borderless si-gplus">
+                                <i class="icon-gplus"></i>
+                                <i class="icon-gplus"></i>
+                            </a>
+
+                            <a href="#" class="social-icon si-small si-borderless si-pinterest">
+                                <i class="icon-pinterest"></i>
+                                <i class="icon-pinterest"></i>
+                            </a>
+
+                            <a href="#" class="social-icon si-small si-borderless si-vimeo">
+                                <i class="icon-vimeo"></i>
+                                <i class="icon-vimeo"></i>
+                            </a>
+
+                            <a href="#" class="social-icon si-small si-borderless si-github">
+                                <i class="icon-github"></i>
+                                <i class="icon-github"></i>
+                            </a>
+
+                            <a href="#" class="social-icon si-small si-borderless si-yahoo">
+                                <i class="icon-yahoo"></i>
+                                <i class="icon-yahoo"></i>
+                            </a>
+
+                            <a href="#" class="social-icon si-small si-borderless si-linkedin">
+                                <i class="icon-linkedin"></i>
+                                <i class="icon-linkedin"></i>
+                            </a>
+                        </div>
+
+                        <div class="clear"></div>
+
+                        <i class="icon-envelope2"></i> info@canvas.com <span class="middot">&middot;</span> <i class="icon-headphones"></i> +91-11-6541-6369 <span class="middot">&middot;</span> <i class="icon-skype2"></i> CanvasOnSkype
+                    </div>
+
+                </div>
+
+            </div><!-- #copyrights end -->
+
+        </footer><!-- #footer end -->
+
+    </div><!-- #wrapper end -->
+
+    <!-- Go To Top
+    ============================================= -->
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    <!-- External JavaScripts
+    ============================================= -->
+    <script type="text/javascript" src="<?php echo THEME; ?>js/jquery.js"></script>
+    <script type="text/javascript" src="<?php echo THEME; ?>js/plugins.js"></script>
+    <script type="text/javascript" src="<?php echo THEME; ?>js/jquery.calendario.js"></script>
+    <script type="text/javascript" src="<?php echo THEME; ?>js/events-data.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- Footer Scripts
+    ============================================= -->
+    <script type="text/javascript" src="<?php echo THEME; ?>js/functions.js"></script>
+
+    <script type="text/javascript">
+        var base_url = '<?php echo base_url(); ?>'
+    </script>
+
+</body>
+</html>

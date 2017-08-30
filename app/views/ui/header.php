@@ -1,58 +1,97 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
 
-<!-- Base Css Files -->
-<link href="<?php echo THEME; ?>css/bootstrap.min.css" rel="stylesheet" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="SemiColonWeb" />
 
-<!-- Font Icons -->
-<link href="<?php echo THEME; ?>assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-<link href="<?php echo THEME; ?>assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
-<link href="<?php echo THEME; ?>css/material-design-iconic-font.min.css" rel="stylesheet">
+    <!-- Stylesheets
+    ============================================= -->
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="<?php echo THEME; ?>css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo THEME; ?>css/dark.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo THEME; ?>css/font-icons.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo THEME; ?>css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo THEME; ?>css/magnific-popup.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo THEME; ?>css/calendar.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
 
-<!-- animate css -->
-<link href="<?php echo THEME; ?>css/animate.css" rel="stylesheet" />
-
-<!-- Waves-effect -->
-<link href="<?php echo THEME; ?>css/waves-effect.css" rel="stylesheet">
-
-<!-- DATE PICKER -->
-<link href="<?php echo THEME; ?>assets/timepicker/bootstrap-timepicker.min.css" rel="stylesheet" />
-<link href="<?php echo THEME; ?>assets/timepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
-
-<!-- Dropzone css -->
-<link href="<?php echo THEME; ?>assets/dropzone/dropzone.css" rel="stylesheet" type="text/css" />
-<!-- Custom Files -->
-<link href="<?php echo THEME; ?>css/helper.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo THEME; ?>css/style.css" rel="stylesheet" type="text/css" />
-
-<!-- Plugins css -->
-<link href="<?php echo THEME; ?>assets/modal-effect/css/component.css" rel="stylesheet">
-
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/sweet-alert/sweet-alert.min.css" />
-
-<!-- DataTables -->
-<link href="<?php echo THEME; ?>assets/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <link rel="stylesheet" href="<?php echo THEME; ?>css/style.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo THEME; ?>css/responsive.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
         <![endif]-->
-<script src="<?php echo THEME; ?>js/modernizr.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/summernote/summernote.css">
+    <!-- Document Title
+    ============================================= -->
+    <title><?php echo $title ?></title>
 
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/datepicker/datepicker3.css">
+</head>
 
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/daterangepicker/daterangepicker.css">
+<body class="stretched">
 
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/toastr/toastr.min.css">
+    <!-- Document Wrapper
+    ============================================= -->
+    <div id="wrapper" class="clearfix">
 
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/select2/select2.min.css">
+        <!-- Header
+        ============================================= -->
+        <header id="header" class="full-header">
 
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/jquery-timepicker/jquery.timepicker.css">
+            <div id="header-wrap">
 
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/ionicon/css/ionicons.min.css">
+                <div class="container clearfix">
 
+                    <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
 
-<link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>css/custom.css" />
-        
+                    <!-- Logo
+                    ============================================= -->
+                    <div id="logo">
+                        <a href="index.html" class="standard-logo" data-dark-logo="<?php echo THEME; ?>images/logo-dark.png"><img src="<?php echo THEME; ?>images/logo.png" alt="Canvas Logo"></a>
+                        <a href="index.html" class="retina-logo" data-dark-logo="<?php echo THEME; ?>images/logo-dark@2x.png"><img src="<?php echo THEME; ?>images/logo@2x.png" alt="Canvas Logo"></a>
+                    </div><!-- #logo end -->
+
+                    <!-- Primary Navigation
+                    ============================================= -->
+                    <nav id="primary-menu">
+
+                        <ul>
+                            <li class="<?php echo $page == 'home' ? 'current' : '' ?>">
+                                <a href="<?php echo base_url(); ?>">
+                                    <div>Home</div>
+                                </a>
+                            </li>
+                            <?php if ($this->session->userdata('session_uid')): ?>
+                                <li class="<?php echo $page == 'users' ? 'current' : '' ?>">
+                                    <a href="<?php echo base_url(); ?>users">
+                                        <div>My Account</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo base_url(); ?>login/do_logout">
+                                        <div>Logout</div>
+                                    </a>
+                                </li>
+                            <?php else: ?>
+                                <li class="<?php echo $page == 'login' ? 'current' : '' ?>">
+                                    <a href="<?php echo base_url(); ?>login">
+                                        <div>Login</div>
+                                    </a>
+                                </li>
+                                <li class="<?php echo $page == 'registration' ? 'current' : '' ?>">
+                                    <a href="<?php echo base_url(); ?>registration">
+                                        <div>Register</div>
+                                    </a>
+                                </li>
+                            <?php endif ?>
+                        </ul>
+
+                    </nav><!-- #primary-menu end -->
+
+                </div>
+
+            </div>
+
+        </header><!-- #header end -->
