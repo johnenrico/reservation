@@ -25,7 +25,7 @@
                 <div class="topbar-left">
                     <div class="text-center">
 
-                        <a href="<?php echo site_url('home'); ?>" class="logo"> <span><img class="img-responsive" src="<?php echo THEME; ?>images/logo.png" style="max-height: 60px;margin-top: 5px;"/> </span></a>
+                        <a href="<?php echo site_url('home'); ?>" class="logo"> <span><img class="img-responsive" src="<?php echo THEME; ?>images/SB logo.jpg" style="max-height: 60px;margin-top: 5px;"/> </span></a>
                     </div>
                 </div>
                 <!-- Button mobile view to collapse sidebar menu -->
