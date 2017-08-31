@@ -12,45 +12,51 @@
 
                         <div class="acctitle"><i class="acc-closed icon-user4"></i><i class="acc-open icon-ok-sign"></i>New Signup? Register for an Account</div>
                         <div class="acc_content clearfix">
-                            <form id="register-form" name="register-form" class="nobottommargin" action="<?php echo site_url("registration/do_register") ?>" method="post">
-                            <?php echo $this->general->flash_message(); ?>
+                            <form id="register-form" name="register-form" class="nobottommargin">
                                 <div class="col_full">
                                     <label for="register-form-name">Name:</label>
-                                    <input type="text" id="register-form-name" name="name" value="<?php echo $this->session->name; ?>" class="form-control" />
+                                    <input type="text" id="register-form-name" name="name" class="form-control" />
+                                    <small class="help-block"></small>
                                 </div>
 
                                 <div class="col_full">
                                     <label for="register-form-email">Email Address:</label>
-                                    <input type="text" id="register-form-email" name="email" value="<?php echo $this->session->email; ?>" class="form-control" />
+                                    <input type="text" id="register-form-email" name="email" class="form-control" />
+                                    <small class="help-block"></small>
                                 </div>
 
                                 <div class="col_full">
                                     <label for="register-form-email">Passport ID:</label>
-                                    <input type="text" id="register-form-email" name="passport_id" value="<?php echo $this->session->passport_id; ?>" class="form-control" />
+                                    <input type="text" id="register-form-email" name="passport_id" data-mask="000000-00-0000" placeholder="000000-00-0000" class="form-control" />
+                                    <small class="help-block"></small>
                                 </div>
 
                                 <div class="col_full">
                                     <label for="register-form-username">Choose a Username:</label>
-                                    <input type="text" id="register-form-username" name="username" value="<?php echo $this->session->username; ?>" class="form-control" />
+                                    <input type="text" id="register-form-username" name="username" class="form-control" />
+                                    <small class="help-block"></small>
                                 </div>
 
                                 <div class="col_full">
                                     <label for="register-form-phone">Phone:</label>
-                                    <input type="text" id="register-form-phone" data-mask="+639999999999" name="number" value="<?php echo $this->session->number; ?>" class="form-control" />
+                                    <input type="text" id="register-form-phone" name="phone" class="form-control" />
+                                    <small class="help-block"></small>
                                 </div>
 
                                 <div class="col_full">
                                     <label for="register-form-password">Choose Password:</label>
                                     <input type="password" id="register-form-password" name="password" value="" class="form-control" />
+                                    <small class="help-block"></small>
                                 </div>
 
                                 <div class="col_full">
                                     <label for="register-form-repassword">Re-enter Password:</label>
-                                    <input type="password" id="register-form-repassword" name="password_again" value="" class="form-control" />
+                                    <input type="password" id="register-form-repassword" name="rpassword" value="" class="form-control" />
+                                    <small class="help-block"></small>
                                 </div>
 
                                 <div class="col_full nobottommargin">
-                                    <button class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" type="submit">Register Now</button>
+                                    <a href="javascript:;" class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit">Register Now</a>
                                 </div>
                             </form>
                         </div>
@@ -64,3 +70,48 @@
         </section><!-- #content end -->
 
 <?php $this->load->view('ui/footer') ?>
+
+<script type="text/javascript">
+    
+    $(function() {
+
+        $('input').change(function(){
+            $(this).closest('.col_full').removeClass('has-error');
+            $(this).siblings('small.help-block').empty();
+        });
+
+    });
+
+
+    $('#register-form-submit').on('click', function (e) {
+
+              $.ajax({
+                url : base_url + 'registration/do_register',
+                type: "POST",
+                data: $('#register-form').serialize(),
+                dataType: "JSON",
+                success: function(data)
+                {
+
+                  if(data.status)
+                  {
+                    window.location.href = base_url + 'activation';
+                  }
+                  else
+                  {
+                    for (var i = 0; i < data.inputerror.length; i++) 
+                    {
+                        $('[name="'+data.inputerror[i]+'"]').closest('.col_full').addClass('has-error');
+                        $('[name="'+data.inputerror[i]+'"]').siblings('small.help-block').text(data.error_string[i]);
+                    }
+                  }
+
+
+              }
+          });
+
+
+    });
+
+
+</script>

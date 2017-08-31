@@ -398,15 +398,26 @@
 .dark .fc-calendar .fc-row > div > div span {
 	color: rgba(255,255,255,0.7);
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
-	background: rgba(255,255,255,0.1);
+	background: #1E73BE;
 }
 
 .dark .fc-calendar .fc-row > div > div a:hover { background: rgba(255,255,255,0.3) !important; }
 
 /* Custom
 -----------------------------------------------------------------*/
+.dark .fc-calendar .fc-row .fc-past {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
 .dark .fc-calendar .fc-row .has-sub {
 	cursor: pointer;
+}
+
+div.has-sub:hover, div.has-sub.active {
+	background-color: #1ABC9C;
+	background-image: url(../images/icons/iconalt.svg);
+	background-position: center center;
+	background-size: 100% 100%;
 }
 
 .fc-calendar .fc-row > div time, .fc-calendar .fc-row > div note {

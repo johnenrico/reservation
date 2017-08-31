@@ -30,6 +30,7 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="acctitle"><i class="acc-closed icon-user4"></i><i class="acc-open icon-ok-sign"></i>New Signup? Register for an Account</div>
                     </div>
 
                 </div>
@@ -39,3 +40,11 @@
         </section><!-- #content end -->
 
 <?php $this->load->view('ui/footer') ?>
+
+<script type="text/javascript">
+    
+    $('.acctitle').on('click', function() {
+        window.location.href = base_url + 'registration';
+    });
+
+</script>

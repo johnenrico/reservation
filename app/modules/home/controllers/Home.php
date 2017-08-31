@@ -23,10 +23,5 @@ class Home extends MX_Controller
 
 	}
 
-	public function dashboard_data()
-	{
-
-	}
-	
 	
 }

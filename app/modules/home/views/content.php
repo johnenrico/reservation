@@ -22,7 +22,7 @@
                                             <label for="inputBranch">Select Branch:</label>
                                             <select id="inputBranch" class="form-control leftmargin-xs" name="branches">
                                                 <?php foreach ($branches as $key => $branch): ?>
-                                                    <option value="<?php echo $branch->id ?>"><?php echo $branch->name; ?></option>
+                                                    <option data-address="<?php echo $branch->address ?>" value="<?php echo $branch->id ?>"><?php echo $branch->name; ?></option>
                                                 <?php endforeach ?>
                                             </select>
                                             <nav>
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <form id="reservatioForm" class="topmargin">
+                            <form id="reservatioForm" class="clear-topmargin-sm">
                                 <div class="form-group">
                                     <input type="hidden" name="branch_id" class="form-control">
                                     <input type="hidden" name="date" class="form-control">
@@ -45,6 +45,7 @@
                                 <div class="form-group inputFields"></div>
                                 <div class="form-group inputTimeSlot"></div>
                                 <div class="form-group inputSummary"></div>
+                                <div class="form-group pull-right inputBook"></div>
                             </form>
                         </div>
 
@@ -204,6 +205,9 @@
 
             var cal = $( '#calendar' ).calendario( {
                 onDayClick : function( $el, $contentEl, dateProperties ) {
+                    $('.inputSummary').html('');
+                    $('.inputTimeSlot').html('');
+                    $('.inputBook').html('');
 
                     var d = new Date();
                     var today = d.getFullYear()  + "-" + (d.getMonth()+1) + "-" + d.getDate();
@@ -242,6 +246,10 @@
                                                         '<div class="form-group nomargin">' +
                                                             '<label class="width-100">Branch: </label>' +
                                                             '<span class="s-branch">' + $('[name="branches"] option:selected').text() + '</span>' +
+                                                        '</div>' +
+                                                        '<div class="form-group nomargin">' +
+                                                            '<label class="width-100">Address: </label>' +
+                                                            '<span class="s-address">' + $('[name="branches"] option:selected').data('address') + '</span>' +
                                                         '</div>' +
                                                         '<div class="form-group nomargin">' +
                                                             '<label class="width-100">Fields: </label>' +
@@ -294,6 +302,7 @@
             function updateMonthYear() {
                 $month.html( cal.getMonthName() );
                 $year.html( cal.getYear() );
+                getavailableDates();
             };
 
             $('#calendar').on('shown.calendar.calendario', function(){
@@ -302,6 +311,7 @@
                 //available, i.e., 'onDayClick.calendario' and 'onDayFocus.calendario'
                 //and so on. You can have custom events.
                 $('.dark .fc-calendar .fc-row .fc-future .fc-date').parent().addClass('has-sub');
+
             });
 
             $('#inputBranch').on('change', function() {
@@ -309,9 +319,11 @@
                 $('.inputFields').html('');
                 $('.inputSummary').html('');
                 $('.inputTimeSlot').html('');
+                $('.inputBook').html('');
 
                 getavailableDates();
                 $('.s-branch').html($('[name="branches"] option:selected').text());
+                $('.s-address').html($('[name="branches"] option:selected').data('address'));
             });
 
             function getavailableDates() {
@@ -322,9 +334,19 @@
                     url: base_url + 'reservation/get_date_available',
                     dataType: 'JSON',
                     success: function( data ) {
-                        cal.setData({
-                            '08-30-2017' : '<span class="label label-default">41 available slots</span>',
-                        });
+
+                       var jsObj = {};
+                       $.each(data.available_slots, function(key, val) {
+
+                        $.each(val.date, function(q, w) {
+                            jsObj[w] = '<span class="label label-default">'+ val.slot[q] +' Available</span>';
+                        })
+                        console.log(jsObj);
+                        
+                       });
+                       
+                        cal.setData(jsObj);
+
                     }
                 });
             }
@@ -338,7 +360,8 @@
                     url: base_url + 'reservation/get_time_available',
                     dataType: 'JSON',
                     success: function(data) {
-                        var html = '<label for="inputTimeSlot">Time Slot:</label>' +
+                        var html = '<div class="form-group TimeSlotSelected"></div>'
+                        '<label for="inputTimeSlot">Time Slot:</label>' +
                         '<ul id="inputTimeSlot" class="list-group">';
                         $.each(data.message, function(i, val){
                             html += '<a id="inputTime" href="javascript:;" data-id="' + val.id + '" data-amount="' + val.amount + '" data-time="' + val.start + ' - ' + val.end + '"><li class="list-group-item">' + val.start + ' - ' + val.end + '</li></a>';
@@ -353,13 +376,49 @@
             });
 
             $(document).on('click', '#inputTime', function() {
+                $('.inputTimeSlot > a').removeAttr('style');
+                $(this).css('color', '#fff');
                 var id = $(this).data('id');
                 var amount = $(this).data('amount');
                 var time = $(this).data('time');
 
+                $('.TimeSlotSelected').html('<input type="hidden" value="' + id + '" name="timeslot">');
+
                 $('.s-time').html(time);
                 $('.s-amount').html('&#8369; ' + amount);
 
+                $('.inputBook').html('<a id="inputBook" href="#" class="button button-small button-dark button-rounded"><i class="icon-ok"></i>Book</a>')
+            });
+
+            $(document).on('click', '#inputBook', function() {
+                $.ajax({
+                    type: 'POST',
+                    data: $('#reservatioForm').serialize(),
+                    url: base_url + 'reservation/save',
+                    dataType: 'JSON',
+                    success: function(data) {
+                        if (data.login) {
+                             window.location.href = base_url + 'login';
+                        } else if (data.users) {
+                             window.location.href = base_url + 'users';
+                        } else {
+                            swal({
+                              title: "Success!",
+                              text: "Check your account for booking information. We'll see you soon!",
+                              type: "success",
+                              confirmButtonText: "Go to my account",
+                              confirmButtonColor: '#444',
+                          }, function() {
+                            window.location.href = base_url + 'users';
+                          });
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', 'div.has-sub', function() {
+                $('div.has-sub').removeClass('active');
+                $(this).addClass('active');
             });
 
             $(window).load(function () {

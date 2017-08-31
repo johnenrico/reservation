@@ -74,52 +74,37 @@ class Reservation extends MX_Controller
 
 	public function save()
 	{
+
+		if(!$this->session->userdata('session_uid')) {
+			$this->session->set_flashdata('msg_error', 'Please login first before to book a reservation.');
+			exit(json_encode(array('login' => TRUE)));
+		}
+
+		$this->db->where('date_reserved >=', date('Y-m-d'));
+		$this->db->where('status', 1);
+		$this->db->where('customer_id', $this->session->userdata('session_uid'));
+		$res = $this->db->get('reservation');
+
+		if ($res->num_rows() == 3) {
+			$this->session->set_flashdata('msg_error', 'You cannot booked 3 consecutive reservation.');
+			exit(json_encode(array('users' => TRUE)));
+		}
+
 		$all_post = $this->general->all_post();
-		$fv = $this->form_validation;
 
-			$fv->set_rules('name', 'name', 'required');
-			$fv->set_rules('date', 'date', 'required');
-			$fv->set_rules('timeslot', 'timeslot', 'required');
-			$fv->set_rules('field', 'field', 'required');
-			
-		if($fv->run() == TRUE)
-		{
-			$this->db->where('passport_id', $all_post->name);
-			$this->db->or_where('username', $all_post->name);
-			$user = $this->general->get_table('customers');
-			if($user->num_rows() == 0)
-			{
-				exit($this->general->json_msg('error', 'Customer Not Found'));
-			}
+		$insert_data = [
+		'field_id' => $all_post->fields
+		,'time_slot' => $all_post->timeslot
+		,'customer_id' => $this->session->userdata('session_uid')
+		,'date_reserved' => $all_post->date
+		,'status' => 1
+		,'updated_at' => $this->general->datetime
+		];
 
-			$this->db->where('activation IS NULL', null, false);
-			$this->db->where('passport_id', $all_post->name);
-			$this->db->or_where('username', $all_post->name);
-			$user = $this->general->get_table('customers');
-			if($user->num_rows() == 0)
-			{
-				exit($this->general->json_msg('error', 'Customer Not Activated'));
-			}
+		$this->general->insert_table('reservation', $insert_data);
 
+		exit($this->general->json_msg('success', 'Successfully Saved'));
 
-
-			$insert_data = [
-							'field_id' => $all_post->field
-							,'time_slot' => $all_post->timeslot
-							,'customer_id' => $user->row()->id
-							,'date_reserved' => date('Y-m-d',strtotime($all_post->date))
-							,'updated_at' => $this->general->datetime
-							];
-
-			$this->general->insert_table('reservation', $insert_data);
-
-			exit($this->general->json_msg('success', 'Successfully Saved'));
-
-		}
-		else
-		{
-			exit($this->general->json_msg('error', $this->form_validation->error_array()));
-		}
 	}
 
 	public function view($id)
@@ -173,23 +158,31 @@ class Reservation extends MX_Controller
 		$max_slot = $count_field * $avail_time;
 
 		$this->db->where('date_reserved >=', date('Y-m-d'));
+		$this->db->where('status', 1);
 		$this->db->group_by('date_reserved');
 		$date = $this->general->get_table('reservation', '', 'date_reserved');
+
 		$data = [];
+
 		foreach ($date->result() as $key => $value) {
 			array_push($data, $value->date_reserved);
 		}
 
-		$dateSet['date'] = [];
-		$dateSet['date_count'] = [];
-		foreach ($data as $key => $value) {
-			$this->db->where('date_reserved', $value);
-			$res = $this->general->get_table('reservation', '', 'date_reserved')->num_rows();
-			$dateSet['date'][] = $value;
-			$dateSet['available_slots'][] = $max_slot - $res;
+		for ($x = 1; $x < 30; $x++) { 
+			array_push($data, date('Y-m-d', strtotime('+'. $x .' day')));
 		}
 
-		exit($this->general->json_msg('success'));
+		$dateSet['available_slots'] = [];
+		$i = 0;
+		foreach ($data as $key => $value) {
+			$this->db->where('date_reserved', $value);
+			$res = $this->general->get_table('reservation', ['status' => 1], 'date_reserved')->num_rows();
+			$slots =  $max_slot - $res;
+			$dateSet['available_slots'][$i]['date'][] = date_format(date_create($value), 'm-d-Y');
+			$dateSet['available_slots'][$i]['slot'][] = $slots;
+		}
+
+		exit(json_encode($dateSet));
 
 	}
 
@@ -214,7 +207,7 @@ class Reservation extends MX_Controller
 	{
 		$all_post = $this->general->all_post();
 
-		$time = $this->general->get_table('reservation', ['date_reserved' => $all_post->date, 'field_id' => $all_post->fields], 'time_slot');
+		$time = $this->general->get_table('reservation', ['date_reserved' => $all_post->date, 'field_id' => $all_post->fields, 'status' => 1], 'time_slot');
 		$data = [];
 		foreach ($time->result() as $vals) 
 		{

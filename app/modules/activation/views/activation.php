@@ -42,11 +42,14 @@
                 <div class="container center clearfix">
 
                     <div class="heading-block center">
-                        <h1>This is a Blank Page</h1>
-                        <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, ratione?</span>
+                        <h1><span class="i-bordered i-circled divcenter icon-ok"></span></h1>
+                        <h2>Registration Successful</h2>
+                        <span>Email address verification needed.</span>
                     </div>
 
-                    <p>Quod aut totam adipisci fugit dolor tempora quasi odit, qui aliquam fuga voluptatibus quas eos earum facilis corporis quibusdam eius! Molestiae dolorum nisi quod aperiam ullam libero qui autem alias laborum totam voluptatibus aliquam commodi nobis ipsum excepturi repellendus nihil labore est possimus magni aliquid, sed culpa ad explicabo! Esse, provident, autem.</p>
+                    <p>
+                        Please check your email to activate your user account. if you don't receive an email within a few seconds, please check your spam filters. if you cannot access your spam filter, please submit a request for assistance.
+                    </p>
 
                     <a href="<?php echo base_url(); ?>" class="btn btn-default topmargin-sm">Back to the Home</a>
 

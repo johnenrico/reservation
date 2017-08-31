@@ -33,15 +33,11 @@ class General extends CI_Model
        $this->order = null; 
 		
 	}
-	 public function check_user(){
-		if(!$this->session_uid){
-			redirect('login');
-		}
-		else{
-			$this->db->join('user_group as ug', 'ug.guid = u.guid', 'inner');
-			$users = $this->get_table('users as u', array('u.id' => $this->session_uid), 'u.*, ug.gname')->row();
-			return $users;
-		}
+
+	public function check_user(){
+		$this->db->join('user_group as ug', 'ug.guid = u.guid', 'inner');
+		$users = $this->get_table('users as u', array('u.id' => $this->session_uid), 'u.*, ug.gname')->row();
+		return $users;
 	}
 
 

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="<?php echo THEME; ?>css/calendar.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo THEME; ?>assets/sweet-alert/sweet-alert.css">
 
     <link rel="stylesheet" href="<?php echo THEME; ?>css/style.css" type="text/css" />
     <link rel="stylesheet" href="<?php echo THEME; ?>css/responsive.css" type="text/css" />
@@ -49,8 +50,7 @@
                     <!-- Logo
                     ============================================= -->
                     <div id="logo">
-                        <a href="index.html" class="standard-logo" data-dark-logo="<?php echo THEME; ?>images/logo-dark.png"><img src="<?php echo THEME; ?>images/logo.png" alt="Canvas Logo"></a>
-                        <a href="index.html" class="retina-logo" data-dark-logo="<?php echo THEME; ?>images/logo-dark@2x.png"><img src="<?php echo THEME; ?>images/logo@2x.png" alt="Canvas Logo"></a>
+                        <a href="#" class="standard-logo" data-dark-logo="<?php echo THEME; ?>images/logo-dark.png"><img src="<?php echo THEME; ?>images/logo.png" alt="Logo"></a>
                     </div><!-- #logo end -->
 
                     <!-- Primary Navigation

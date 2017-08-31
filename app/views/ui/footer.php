@@ -240,6 +240,8 @@
     <script type="text/javascript" src="<?php echo THEME; ?>js/events-data.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="<?php echo THEME; ?>assets/sweet-alert/sweet-alert.min.js"></script>
 
     <!-- Footer Scripts
     ============================================= -->
