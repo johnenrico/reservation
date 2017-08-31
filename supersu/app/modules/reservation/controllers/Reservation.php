@@ -173,14 +173,17 @@ class reservation extends MX_Controller
 		$all_post = $this->general->all_post();
 
 		$this->db->where('id !=', $all_post->id);
+		$this->db->where('status', 1);
 		$time = $this->general->get_table('reservation', ['date_reserved' => $all_post->date, 'field_id' => $all_post->fields], 'time_slot');
 		$data = [];
 		foreach ($time->result() as $vals) 
 		{
 			array_push($data, $vals->time_slot);
 		}
-
-		$this->db->where_not_in('id', $data);
+		if($data != '')
+		{
+			$this->db->where_not_in('id', $data);
+		}
 		$avail_time = $this->general->get_table('time_slots', '','*');
 
 		
