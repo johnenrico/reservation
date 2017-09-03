@@ -45,6 +45,7 @@ class reservation extends MX_Controller
 
 		$data = [];
 		$this->db->order_by('start', 'asc');
+		$this->db->where('branch_id', $all_post->branch_id);
 		$time = $this->general->get_table('time_slots');
 		$i = 0;
 		foreach ($fields->result() as $vals) 

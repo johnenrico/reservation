@@ -24,6 +24,7 @@ class time_slot extends MX_Controller
 
 		if($res == 'GET')
 		{
+			$this->viewdata['branches'] = $this->general->get_table('branches','', ['id', 'name']);
 			$this->viewdata['title'] = 'Time Slots';
 			$this->viewdata['content'] = 'time_slot/table';
 			$this->load->view($this->template, $this->viewdata);
@@ -37,12 +38,12 @@ class time_slot extends MX_Controller
 
 			$no = $_POST['start'];
 
-			$this->general->column_search = ['t.start', 't.end', 't.amount'];
-			$this->general->column_order = ['t.start', 't.end', 't.amount'];
+			$this->general->column_search = ['t.start', 't.end', 't.amount','b.name'];
+			$this->general->column_order = ['t.start', 't.end', 't.amount','b.name'];
 
-
+			$this->db->join('branches as b', 'b.id = t.branch_id', 'inner');
 			$this->general->table = 'time_slots as t';
-			$this->db->select(['t.start', 't.end', 't.amount', 't.id']);
+			$this->db->select(['t.start', 't.end', 't.amount', 't.id', 't.branch_id', 'b.name']);
 			$list = $this->general->get_datatables();
 
 			foreach ($list as $val) {
@@ -51,6 +52,8 @@ class time_slot extends MX_Controller
 				$row['start'] = date('H:i a',strtotime($val->start));
 				$row['end'] = date('H:i a',strtotime($val->end));
 				$row['amount'] = number_format($val->amount);
+				$row['branch_id'] = $val->branch_id;
+				$row['branch'] = $val->name;
 		
 				if($this->general->mod_access($this->page, 'alter')){
 					$action .= ' <button class="btn btn-default btn-sm modal_action" data-id="'.$val->id.'" data-toggle="modal" data-target="#modal_action" data-type="edit" data-header="Edit Time Slot"><i class="fa fa-pencil"></i> Edit</button>';
@@ -93,6 +96,7 @@ class time_slot extends MX_Controller
 			$fv->set_rules('start', 'start', 'required');
 			$fv->set_rules('end', 'end', 'required');
 			$fv->set_rules('amount', 'amount', 'required');
+			$fv->set_rules('branch', 'branch', 'required');
 
 			$start = date("H:i", strtotime($all_post->start));
 
@@ -137,6 +141,7 @@ class time_slot extends MX_Controller
 			$fv->set_rules('start', 'start', 'required');
 			$fv->set_rules('end', 'end', 'required');
 			$fv->set_rules('amount', 'amount', 'required');
+			$fv->set_rules('branch', 'branch', 'required');
 
 			if($fv->run() == TRUE)
 			{

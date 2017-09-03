@@ -44,7 +44,8 @@ class Reservation extends MX_Controller
 		$date = date('Y-m-d', strtotime($all_post->date));
 
 		$data = [];
-		$this->db->order_by('start', 'asc');
+		$this->db->order_by('start', 'asc');	
+		$this->db->where('branch_id', $all_post->branch_id);
 		$time = $this->general->get_table('time_slots');
 		$i = 0;
 		foreach ($fields->result() as $vals) 
@@ -152,6 +153,7 @@ class Reservation extends MX_Controller
 
 		$count_field = $this->general->get_table('fields', ['branch_id' => $all_post->branch_id], '*')->num_rows();
 
+		$this->db->where('branch_id', $all_post->branch_id);
 		$avail_time = $this->general->get_table('time_slots', '', '*')->num_rows();
 
 
