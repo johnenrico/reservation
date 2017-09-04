@@ -13,12 +13,13 @@ class settings extends MX_Controller
 		
 		$this->viewdata['modid'] = $this->general->get_modid('Settings');
 		$this->viewdata['controller'] = 'settings';
+		$this->page = 'reservation';
 	}
 
 	function index()
 	{
+		$this->general->blocked_page($this->page);
 
-		
 		$this->viewdata['incremental'] = $this->general->get_table('settings', ['name' => 'incremental'], 'data')->row()->data;
 		$this->viewdata['title'] = 'Settings';
 		$this->viewdata['content'] = 'settings/content';
@@ -27,14 +28,22 @@ class settings extends MX_Controller
 	
 	function update()
 	{
+		$this->general->blocked_page($this->page, 'alter');
+		
 		$all_post = $this->general->all_post();
 		switch ($all_post->type) {
 			case 'incremental':
-			foreach ($all_post as &$value) {
-				echo $value;
+			foreach ($all_post as $key => $value) 
+			{
+				if($key != 'incremental')
+				{
+					$this->db->where('data_keys', $key);
+					$this->db->where('name', 'incremental');
+					$this->general->update_table('settings','',['data' => str_replace(',', '', $value)]);
+				}
 			}
 
-			exit();
+			exit($this->general->json_msg('success', 'Succesfully Updated'));
 			break;
 			
 		}

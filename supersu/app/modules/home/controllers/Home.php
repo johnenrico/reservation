@@ -49,7 +49,7 @@ class home extends MX_Controller
 		$this->db->join('time_slots as t', 't.id = r.time_slot','inner');
 		$this->db->join('customers as c', 'c.id = r.customer_id', 'inner');
 		$this->general->table = 'reservation as r';
-		$this->db->select(['c.name', 'c.username','t.start', 't.end', 'c.name', 'c.username','r.date_reserved','r.id', 'r.updated_at', 'r.status']);
+		$this->db->select(['c.name', 'c.username','t.start', 't.end', 'c.name', 'c.username','r.date_reserved','r.id', 'r.updated_at', 'r.status', 'r.total_charged']);
 		$list = $this->general->get_datatables();
 
 		foreach ($list as $val) {
@@ -59,6 +59,7 @@ class home extends MX_Controller
 			$row['users'] = $val->name.'<br/><small>'.$val->username.'</small>';
 			$row['date_reserved'] = date('F d, Y', strtotime($val->date_reserved));
 			$row['date_file'] = date('F d, Y', strtotime($val->updated_at));
+			$row['total_charged'] = number_format($val->total_charged);
 			$row['status'] = $val->status  == 1 ? '<label class="label label-info">Booked</label>' : '<label class="label label-warning">Cancelled</label>';
 			$row['id'] = $val->id;
 

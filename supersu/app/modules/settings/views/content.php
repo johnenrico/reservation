@@ -16,7 +16,7 @@
             <div class="panel-heading"> 
               <h3 class="panel-title">Incremental</h3> 
             </div>
-            <form data-url="<?php echo base_url('').$controller.'/update' ?>" method="POST" class="flexi_form" data-clear="y"  data-target=".flexi_form">
+            <form data-url="<?php echo base_url('').$controller.'/update' ?>" method="POST" class="flexi_form" data-clear="n" data-target=".flexi_form">
             <input type="hidden" name="type" value="incremental"/>
             <div class="panel-body"> 
               <ul class="list-unstyled">

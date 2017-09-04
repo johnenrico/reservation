@@ -88,6 +88,7 @@
                                 <th>Name</th>
                                 <th>Time</th>
                                 <th>Status</th>
+                                <th>Total Charged</th>
                                 <th>Date Reserved</th>
                                 <th>Date File</th>
                             </thead>
@@ -120,6 +121,7 @@
         { data: 'users', name:  'users', searchable: false, orderable: false, sortable: false },
         { data: 'time', name:  'time',searchable: false, orderable: false, sortable: false },
         { data: 'status', name:  'status',searchable: false, orderable: false, sortable: false},
+        { data: 'total_charged', name:  'total_charged',searchable: false, orderable: false, sortable: false},
         { data: 'date_reserved', name:  'date_reserved',searchable: false, orderable: false, sortable: false},
         { data: 'date_file', name:  'date_file',searchable: false, orderable: false, sortable: false},
         ],

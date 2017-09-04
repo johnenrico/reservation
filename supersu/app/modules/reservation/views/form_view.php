@@ -89,7 +89,7 @@
         <div class="col-md-3 col-md-offset-9">
 
           <hr>
-          <h3 class="text-right">Total: <?php echo number_format($data->amount); ?></h3>
+          <h3 class="text-right">Total: <?php echo number_format($data->total_charged); ?></h3>
         </div>
       </div>
       </div>

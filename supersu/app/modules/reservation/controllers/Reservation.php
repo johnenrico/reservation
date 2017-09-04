@@ -110,12 +110,22 @@ class reservation extends MX_Controller
 
 
 
+			$day = date('l',strtotime($all_post->date));
+
+
+			$increase = isset($this->general->get_table('settings', ['name' => 'incremental' , 'data_keys' => $day], 'data')->row()->data) ? $this->general->get_table('settings', ['name' => 'incremental' , 'data_keys' => $day], 'data')->row()->data : 0;
+			$time_price = $this->general->get_table('time_slots', ['id' => $all_post->timeslot], 'amount')->row()->amount;
+
+			$total = $time_price + $increase;
+
+
 			$insert_data = [
 							'field_id' => $all_post->field
 							,'time_slot' => $all_post->timeslot
 							,'customer_id' => $user->row()->id
 							,'date_reserved' => date('Y-m-d',strtotime($all_post->date))
 							,'status' => 1
+							,'total_charged' => $total
 							,'updated_at' => $this->general->datetime
 							];
 
@@ -134,12 +144,12 @@ class reservation extends MX_Controller
 	{
 
 		$this->general->blocked_page($this->page);
+		$this->db->where('r.id',$id);
 		$this->db->join('fields as f' ,'f.id = r.field_id', 'inner');
 		$this->db->join('branches as g' ,'g.id = f.branch_id', 'inner');
 		$this->db->join('time_slots as t' ,'t.id = r.time_slot', 'inner');
 		$this->db->join('customers as c' ,'c.id = r.customer_id', 'inner');
-		$this->viewdata['data'] = $this->general->get_table('reservation as r', '',['r.date_reserved','r.field_id','r.time_slot', 'r.customer_id','f.branch_id as branch','g.name as branch_name', 'c.name','c.phone','c.email', 'c.username','c.passport_id','t.start', 't.end','t.amount','f.name as field_name'])->row();
-
+		$this->viewdata['data'] = $this->general->get_table('reservation as r', '',['r.date_reserved','r.field_id','r.time_slot', 'r.customer_id','r.total_charged','f.branch_id as branch','g.name as branch_name', 'c.name','c.phone','c.email', 'c.username','c.passport_id','t.start', 't.end','t.amount','f.name as field_name'])->row();
 		$this->viewdata['id'] = $id;
 
 	
