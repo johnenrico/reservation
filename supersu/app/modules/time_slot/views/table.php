@@ -28,7 +28,6 @@
                     <th>Time Start</th>
                     <th>Time End</th>
                     <th>Price</th>
-                    <th>Branch</th>
                     <th></th>
                   </thead>
                 </table>
@@ -50,17 +49,6 @@
                 <div class="panel-body"> 
                   <form role="form" data-url="<?php echo base_url('').$controller.'/save' ?>" method="POST" class="flexi_form" data-clear="y" data-datatable="#time_slots_datatable" data-modal="#modal_action" data-target="#modal_action .flexi_form">
                    <div id="append">
-                   </div>
-                   <div class="form-group row">
-                   	<div class="col-sm-8">
-                   		<label for="branch">Select Branch</label>
-                   		<select class="form-control" name="branch" id="branch">
-                   			<option value="">Select Branch</option>
-                   			<?php foreach ($branches->result() as $vals): ?>
-                   				<option value="<?php echo $vals->id; ?>" ><?php echo $vals->name; ?></option>
-                   			<?php endforeach ?>
-                   		</select>
-                   	</div>
                    </div>
                    <div class="form-group row">
                     <div class="col-sm-5">
@@ -121,8 +109,7 @@
          { data: 'start', name:  't.start' },
          { data: 'end', name:  't.end' },
          { data: 'amount', name:  't.amount' },
-         { data: 'branch', name:  'branch',searchable: false, orderable: false, sortable: false },
-         { data: 'action', name:  'action',searchable: false, orderable: false, sortable: false },
+         { data: 'action', name:  'action' },
          ],
 
        });
@@ -151,8 +138,7 @@
         $('input[name="start"]').val(rows[0].start);
         $('input[name="end"]').val(rows[0].end);
         $('input[name="amount"]').val(rows[0].amount);
-        $('select[name="branch"]').val(rows[0].branch_id);
-    
+        
       }
       $('#modal_action .flexi_form #append').html(action);
     });

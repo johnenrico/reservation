@@ -18,61 +18,27 @@ class settings extends MX_Controller
 	function index()
 	{
 
-		$this->viewdata['filetype'] = $this->general->get_table('settings', array('name' => 'filetype'), 'data')->row()->data;
-		$this->viewdata['user'] = $this->general->get_table('settings', array('name' => 'user'), 'data')->row()->data;
-		$this->viewdata['question'] = $this->general->get_table('settings', array('name' => 'question'), 'data')->row()->data;
-		$this->viewdata['topic'] = $this->general->get_table('settings', array('name' => 'topic'), 'data')->row()->data;
-		$res = $this->general->get_table('settings', array('name' => 'sms'), 'data')->row()->data;
-		$this->viewdata['sms'] = json_decode($res);
-
+		
+		$this->viewdata['incremental'] = $this->general->get_table('settings', ['name' => 'incremental'], 'data')->row()->data;
 		$this->viewdata['title'] = 'Settings';
 		$this->viewdata['content'] = 'settings/content';
 		$this->load->view($this->template, $this->viewdata);
 	}
-	function delete_category(){
+	
+	function update()
+	{
 		$all_post = $this->general->all_post();
-		$res = $this->general->get_table('settings', array('name' => $all_post->name), 'data')->row()->data;
-		$res = explode(',', $res);
-		if (($key = array_search($all_post->value, $res)) !== false) {
-   			 unset($res[$key]);
+		switch ($all_post->type) {
+			case 'incremental':
+			foreach ($all_post as &$value) {
+				echo $value;
+			}
+
+			exit();
+			break;
+			
 		}
-		$res = implode(',', $res);
-			$update_data = array(
-					  'data' => $res
-					  );
-		$this->general->update_table('settings', array('name' => $all_post->name), $update_data);
-		exit(json_encode(array('status' => 'success', 'message'  => $all_post->name)));
 
 	}
-	function add_category(){
-		$all_post = $this->general->all_post();
-
-		$res = $this->general->get_table('settings', array('name' => $all_post->name), 'data')->row()->data;
-		$res = explode(',', $res);
-
-		if (in_array($all_post->value, $res))
-  		{
-  			exit(json_encode(array('status' => 'error', 'message' => 'Already on the List')));
-  		}
-  		array_push($res, $all_post->value);
-  	
-		$res = implode(',', $res);
-
-		$update_data = array(
-					  'data' => $res
-					  );
-
-		$this->general->update_table('settings', array('name' => $all_post->name), $update_data);
-		exit(json_encode(array('status' => 'success', 'message' => $all_post->name)));
-	}
-	function save_sms_gateway(){
-		$all_post = $this->general->all_post();
-		$data = json_encode($all_post);
-		$this->general->update_table('settings', array('name' => 'sms'), array('data'=> $data));
-		exit(json_encode(array('status' => 'success', 'message' => 'Successfully Updated')));
-	
-	}
-
-	
 	
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2017 at 03:44 PM
+-- Generation Time: Sep 04, 2017 at 03:52 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -124,7 +124,8 @@ INSERT INTO `module` (`modid`, `parent_id`, `mod_name`, `mod_alias`, `icon`, `pe
 (4, 0, 'Time Slots', 'time_slot', 'ion-clock', 'time_slot', 3, 'y', NULL),
 (6, 0, 'Customers', 'customers', 'ion-android-social', 'customers', 2, 'y', NULL),
 (7, 0, 'Soccer Fields', 'fields', 'ion-ios7-football', 'fields', 3, 'y', NULL),
-(8, 0, 'Reservation', 'reservation', 'ion-clipboard', 'reservation', 1, 'y', NULL);
+(8, 0, 'Reservation', 'reservation', 'ion-clipboard', 'reservation', 1, 'y', NULL),
+(9, 0, 'Settings', 'settings', 'md-settings', 'settings', 8, 'y', NULL);
 
 -- --------------------------------------------------------
 
@@ -160,7 +161,8 @@ INSERT INTO `reservation` (`id`, `field_id`, `time_slot`, `customer_id`, `status
 (00000000017, 6, 4, 1, 1, '2017-08-02', '2017-08-28 22:15:19'),
 (00000000018, 6, 5, 1, 1, '2017-08-02', '2017-08-28 22:21:34'),
 (00000000019, 6, 6, 1, 1, '2017-08-02', '2017-08-28 22:22:24'),
-(00000000022, 6, 7, 1, 1, '2017-08-02', '2017-08-29 10:43:06');
+(00000000022, 6, 7, 1, 1, '2017-08-02', '2017-08-29 10:43:06'),
+(00000000023, 4, 3, 1, 1, '2017-09-02', '2017-09-03 19:17:19');
 
 -- --------------------------------------------------------
 
@@ -171,17 +173,22 @@ INSERT INTO `reservation` (`id`, `field_id`, `time_slot`, `customer_id`, `status
 CREATE TABLE `settings` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `data` text,
-  `uid` int(11) DEFAULT NULL,
-  `created_at` varchar(255) DEFAULT NULL
+  `data_keys` varchar(11) NOT NULL,
+  `data` text
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `settings`
 --
 
-INSERT INTO `settings` (`id`, `name`, `data`, `uid`, `created_at`) VALUES
-(1, 'filetype', 'jpeg,docs,docx,png,jpg,pdf', 1, NULL);
+INSERT INTO `settings` (`id`, `name`, `data_keys`, `data`) VALUES
+(1, 'incremental', 'monday', '0'),
+(6, 'incremental', 'tuesday', '0'),
+(7, 'incremental', 'wednesday', '0'),
+(8, 'incremental', 'thursday', '0'),
+(9, 'incremental', 'friday', '0'),
+(10, 'incremental', 'saturday', '0'),
+(11, 'incremental', 'sunday', '0');
 
 -- --------------------------------------------------------
 
@@ -193,6 +200,7 @@ CREATE TABLE `time_slots` (
   `id` int(11) NOT NULL,
   `start` time NOT NULL,
   `end` time NOT NULL,
+  `branch_id` int(11) NOT NULL,
   `amount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -200,13 +208,15 @@ CREATE TABLE `time_slots` (
 -- Dumping data for table `time_slots`
 --
 
-INSERT INTO `time_slots` (`id`, `start`, `end`, `amount`) VALUES
-(3, '06:00:00', '07:00:00', 500),
-(4, '07:00:00', '08:00:00', 100),
-(5, '08:00:00', '09:00:00', 1000),
-(6, '09:00:00', '10:00:00', 500),
-(7, '10:00:00', '11:00:00', 100),
-(8, '12:00:00', '13:00:00', 100);
+INSERT INTO `time_slots` (`id`, `start`, `end`, `branch_id`, `amount`) VALUES
+(3, '06:00:00', '07:00:00', 2, 500),
+(4, '07:00:00', '08:00:00', 2, 100),
+(5, '08:00:00', '09:00:00', 2, 1000),
+(6, '09:00:00', '10:00:00', 2, 500),
+(7, '10:00:00', '11:00:00', 2, 100),
+(8, '12:00:00', '13:00:00', 2, 100),
+(9, '06:00:00', '07:00:00', 7, 500),
+(10, '07:00:00', '08:00:00', 7, 100);
 
 -- --------------------------------------------------------
 
@@ -252,7 +262,7 @@ CREATE TABLE `user_group` (
 --
 
 INSERT INTO `user_group` (`guid`, `gname`, `role`) VALUES
-(1, 'Super Admin', '{"view":"8,6,4,7,5,2,1,3","create":"8,6,4,7,5,2,1,3","alter":"8,6,4,7,5,2,1,3","drop":"8,6,4,7,5,2,1,3"}'),
+(1, 'Super Admin', '{"view":"8,6,4,7,2,1,3,9","create":"8,6,4,7,2,1,3,9","alter":"8,6,4,7,2,1,3,9","drop":"8,6,4,7,2,1,3,9"}'),
 (2, 'Evaluator', '{"view":"1","create":"","alter":"","drop":""}');
 
 --
@@ -337,22 +347,22 @@ ALTER TABLE `fields`
 -- AUTO_INCREMENT for table `module`
 --
 ALTER TABLE `module`
-  MODIFY `modid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `modid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(11) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `time_slots`
 --
 ALTER TABLE `time_slots`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `users`
 --
