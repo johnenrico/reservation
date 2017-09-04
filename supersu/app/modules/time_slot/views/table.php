@@ -114,6 +114,7 @@
           "ajax": {
             "url": '<?php echo base_url('').$controller.'/index'; ?>',
             "type": "POST",
+             "searching": false,
             "data": function (d) {
              d.date = $('#reportrange>span').text();
              d.action = $('select[name=category]').val();
