@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 04, 2017 at 03:52 AM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.23
+-- Generation Time: Sep 04, 2017 at 04:52 AM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -139,6 +139,7 @@ CREATE TABLE `reservation` (
   `time_slot` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
+  `total_charged` int(11) NOT NULL,
   `date_reserved` date NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -147,22 +148,24 @@ CREATE TABLE `reservation` (
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`id`, `field_id`, `time_slot`, `customer_id`, `status`, `date_reserved`, `updated_at`) VALUES
-(00000000005, 6, 4, 1, 1, '0000-00-00', '2017-08-28 22:02:53'),
-(00000000006, 4, 5, 1, 1, '2017-08-02', '2017-08-28 22:04:27'),
-(00000000007, 4, 6, 1, 1, '2017-08-02', '2017-08-28 22:05:11'),
-(00000000008, 4, 7, 1, 1, '2017-08-02', '2017-08-28 22:05:28'),
-(00000000009, 4, 8, 1, 1, '2017-08-02', '2017-08-28 22:05:44'),
-(00000000011, 5, 4, 1, 1, '2017-08-02', '2017-08-28 22:09:19'),
-(00000000012, 5, 5, 1, 1, '2017-08-02', '2017-08-28 22:09:51'),
-(00000000013, 5, 6, 1, 1, '2017-08-02', '2017-08-28 22:10:30'),
-(00000000014, 5, 7, 1, 1, '2017-08-02', '2017-08-28 22:11:24'),
-(00000000015, 5, 8, 1, 1, '2017-08-02', '2017-08-28 22:11:50'),
-(00000000017, 6, 4, 1, 1, '2017-08-02', '2017-08-28 22:15:19'),
-(00000000018, 6, 5, 1, 1, '2017-08-02', '2017-08-28 22:21:34'),
-(00000000019, 6, 6, 1, 1, '2017-08-02', '2017-08-28 22:22:24'),
-(00000000022, 6, 7, 1, 1, '2017-08-02', '2017-08-29 10:43:06'),
-(00000000023, 4, 3, 1, 1, '2017-09-02', '2017-09-03 19:17:19');
+INSERT INTO `reservation` (`id`, `field_id`, `time_slot`, `customer_id`, `status`, `total_charged`, `date_reserved`, `updated_at`) VALUES
+(00000000005, 6, 4, 1, 1, 0, '0000-00-00', '2017-08-28 22:02:53'),
+(00000000006, 4, 5, 1, 1, 0, '2017-08-02', '2017-08-28 22:04:27'),
+(00000000007, 4, 6, 1, 1, 0, '2017-08-02', '2017-08-28 22:05:11'),
+(00000000008, 4, 7, 1, 1, 0, '2017-08-02', '2017-08-28 22:05:28'),
+(00000000009, 4, 8, 1, 1, 0, '2017-08-02', '2017-08-28 22:05:44'),
+(00000000011, 5, 4, 1, 1, 0, '2017-08-02', '2017-08-28 22:09:19'),
+(00000000012, 5, 5, 1, 1, 0, '2017-08-02', '2017-08-28 22:09:51'),
+(00000000013, 5, 6, 1, 1, 0, '2017-08-02', '2017-08-28 22:10:30'),
+(00000000014, 5, 7, 1, 1, 0, '2017-08-02', '2017-08-28 22:11:24'),
+(00000000015, 5, 8, 1, 1, 0, '2017-08-02', '2017-08-28 22:11:50'),
+(00000000017, 6, 4, 1, 1, 0, '2017-08-02', '2017-08-28 22:15:19'),
+(00000000018, 6, 5, 1, 1, 0, '2017-08-02', '2017-08-28 22:21:34'),
+(00000000019, 6, 6, 1, 1, 0, '2017-08-02', '2017-08-28 22:22:24'),
+(00000000022, 6, 7, 1, 1, 0, '2017-08-02', '2017-08-29 10:43:06'),
+(00000000023, 4, 3, 1, 1, 0, '2017-09-02', '2017-09-03 19:17:19'),
+(00000000024, 4, 3, 1, 1, 600, '2017-09-03', '2017-09-04 10:18:55'),
+(00000000025, 4, 3, 1, 1, 700, '2017-08-28', '2017-09-04 10:24:20');
 
 -- --------------------------------------------------------
 
@@ -182,13 +185,13 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `name`, `data_keys`, `data`) VALUES
-(1, 'incremental', 'monday', '0'),
-(6, 'incremental', 'tuesday', '0'),
+(1, 'incremental', 'monday', '200'),
+(6, 'incremental', 'tuesday', '300'),
 (7, 'incremental', 'wednesday', '0'),
 (8, 'incremental', 'thursday', '0'),
 (9, 'incremental', 'friday', '0'),
 (10, 'incremental', 'saturday', '0'),
-(11, 'incremental', 'sunday', '0');
+(11, 'incremental', 'sunday', '100');
 
 -- --------------------------------------------------------
 
@@ -262,8 +265,8 @@ CREATE TABLE `user_group` (
 --
 
 INSERT INTO `user_group` (`guid`, `gname`, `role`) VALUES
-(1, 'Super Admin', '{"view":"8,6,4,7,2,1,3,9","create":"8,6,4,7,2,1,3,9","alter":"8,6,4,7,2,1,3,9","drop":"8,6,4,7,2,1,3,9"}'),
-(2, 'Evaluator', '{"view":"1","create":"","alter":"","drop":""}');
+(1, 'Super Admin', '{\"view\":\"8,6,4,7,2,1,3,9\",\"create\":\"8,6,4,7,2,1,3,9\",\"alter\":\"8,6,4,7,2,1,3,9\",\"drop\":\"8,6,4,7,2,1,3,9\"}'),
+(2, 'Evaluator', '{\"view\":\"1\",\"create\":\"\",\"alter\":\"\",\"drop\":\"\"}');
 
 --
 -- Indexes for dumped tables
@@ -352,7 +355,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(11) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `settings`
 --
